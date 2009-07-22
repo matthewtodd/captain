@@ -1,7 +1,12 @@
 module Captain
   class Application
+    def self.run
+      new.run
+    end
+
     def initialize
       load_default_configuration
+      load_configuration
     end
 
     def run
@@ -53,6 +58,10 @@ module Captain
       tag               'captain'
       version           '9.04'
       working_directory 'image'
+    end
+
+    def load_configuration
+      instance_eval(File.read('config/captain.rb')) if File.exist?('config/captain.rb')
     end
   end
 end

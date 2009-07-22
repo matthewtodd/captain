@@ -57,7 +57,7 @@ module Captain
               raise exception
             else
               puts "#{exception.message} #{@uri}"
-              puts "Trying again... (#{count} more)"
+              puts "Trying again... (#{retry_count} more)"
               retry
             end
           end
