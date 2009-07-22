@@ -1,7 +1,7 @@
-Feature: Repositories
-  In order to make a nice installation disk
-  As a developer
-  I want to assemble packages from various repositories
+Feature: Installer Image
+  In order to install a custom Ubuntu system
+  As a perennial yak-shaver
+  I want to assemble my own installer CD
 
   Scenario: Default Configuration
      When I run captain
