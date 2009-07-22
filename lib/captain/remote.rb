@@ -23,7 +23,9 @@ module Captain
 
     def copy_to(*paths)
       open_stream do |stream|
-        File.open(File.join(paths, 'wb')) { |file| file.write(stream.read) }
+        File.open(File.join(paths, 'w')) do |file|
+          Stream.copy(stream, file)
+        end
       end
     end
 
@@ -44,34 +46,29 @@ module Captain
           yield(cache)
         rescue
           begin
-            @uri.open(progress_meter) do |stream|
+            @uri.open(ProgressMeter.new(@uri).to_open_uri_hash) do |stream|
               @verifier.verify(stream)
               cache.populate(stream)
               yield(cache)
             end
           rescue Exception => exception
-            retry_count = retry_count - 1
-            retry_count.zero? ? raise(exception) : notify_retry(exception.message, retry_count); retry
-          ensure
-            cache.rewind
+            retry_count -= 1
+            if retry_count.zero?
+              raise exception
+            else
+              puts "#{exception.message} #{@uri}"
+              puts "Trying again... (#{count} more)"
+              retry
+            end
           end
         end
       end
     end
 
-    def notify_retry(message, count)
-      puts "#{message} #{@uri}"
-      puts "Trying again... (#{count} more)"
-    end
-
-    def progress_meter
-      { } #:content_length_proc => method(:puts), :progress_proc => method(:puts) }
-    end
-
     module Verifier
       class Content
         def verify(stream)
-          raise("No content.") if stream.read.length.zero?
+          raise("No content.") unless stream.read(1)
         ensure
           stream.rewind
         end
@@ -85,18 +82,13 @@ module Captain
         def verify(stream)
           actual = md5sum(stream)
           raise("MD5Sum mismatch: expected #{@expected} but was #{actual}") unless @expected == actual
-        ensure
-          stream.rewind
         end
 
         private
 
         def md5sum(stream)
           digest = Digest::MD5.new
-          buffer = ''
-          while stream.read(16384, buffer)
-            digest.update(buffer)
-          end
+          Stream.copy(stream, digest, :update)
           digest.hexdigest
         end
       end
@@ -108,23 +100,63 @@ module Captain
 
         def open(uri)
           path = PATH.join("#{uri.host}#{uri.path}")
-          path.dirname.mkpath
-          path.open('w+') { |cache| yield populatable(cache) }
+          if path.exist?
+            path.open('r+') { |cache| yield populatable(cache) }
+          else
+            path.dirname.mkpath
+            path.open('w+') { |cache| yield populatable(cache) }
+          end
         end
 
         private
 
         def populatable(stream)
           def stream.populate(other)
-            truncate(0)
-            write(other.read)
-          ensure
-            rewind
-            other.rewind
+            Stream.copy(other, self)
           end
           stream
         end
       end
     end
+
+    class ProgressMeter
+      def initialize(uri)
+        puts(uri)
+      end
+
+      def to_open_uri_hash
+        { :content_length_proc => method(:max), :progress_proc => method(:step) }
+      end
+
+      def max(size)
+        @max = size
+      end
+
+      def step(size)
+        @current = size
+        report
+      end
+
+      private
+
+      # TODO report percent complete
+      # TODO report time spent
+      # TODO report time remaining
+      def report
+        puts "  #{@current} of #{@max}\e[0F"
+      end
+    end
+
+    class Stream
+      def self.copy(from, to, method = :write)
+        buffer = ''
+        to.truncate(0) if to.respond_to?(:truncate)
+        to.send(method, buffer) while from.read(16384, buffer)
+      ensure
+        from.rewind
+        to.rewind
+      end
+    end
+
   end
 end
