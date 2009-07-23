@@ -2,14 +2,31 @@ require 'digest'
 require 'open-uri'
 require 'pathname'
 require 'uri'
+require 'zlib'
 
 module Captain
   class Remote
+    def self.release_file(mirror, codename)
+      # TODO verify the Release file with GPG
+      new("#{mirror}/dists/#{codename}/Release")
+    end
+
+    def self.component_file(mirror, codename, component, architecture, *rest)
+      uri    = component_uri(mirror, codename, component, architecture, *rest)
+      path   = [component, "binary-#{architecture}", *rest].join('/')
+      md5sum = release_file(mirror, codename).grep(%r{\w{32}\s+#{path}}).first.split(' ').first
+      new(uri, Verifier::MD5.new(md5sum))
+    end
+
     def self.installer_file(mirror, codename, architecture, *rest)
       uri        = installer_uri(mirror, codename, architecture, *rest)
       md5sum_uri = installer_uri(mirror, codename, architecture, 'MD5SUMS')
       md5sum     = new(md5sum_uri).grep(%r{#{rest.join('/')}}).first.split(' ').first
       new(uri, Verifier::MD5.new(md5sum))
+    end
+
+    def self.component_uri(mirror, codename, component, architecture, *rest)
+      ["#{mirror}/dists/#{codename}/#{component}/binary-#{architecture}", *rest].join('/')
     end
 
     def self.installer_uri(mirror, codename, architecture, *rest)
@@ -43,6 +60,33 @@ module Captain
       end
     end
     alias_method :each, :each_line
+
+    def gunzipped
+      Class.new do
+        include Enumerable
+
+        def initialize(stream)
+          @stream = stream
+        end
+
+        def each_line
+          open_stream do |stream|
+            stream.each_line do |line|
+              yield line
+            end
+          end
+        end
+        alias_method :each, :each_line
+
+        private
+
+        def open_stream
+          @stream.send(:open_stream) do |stream|
+            yield Zlib::GzipReader.new(stream)
+          end
+        end
+      end.new(self)
+    end
 
     private
 

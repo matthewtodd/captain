@@ -10,6 +10,7 @@ module Captain
     end
 
     def run
+      include_packages
       include_installer_and_its_supporting_files
       include_boot_loader
       create_iso_image
@@ -26,6 +27,10 @@ module Captain
     end
 
     private
+
+    def include_packages
+      PackageList.new(repositories, architecture, tasks, packages).copy_to(working_directory)
+    end
 
     def include_installer_and_its_supporting_files
       mirror, codename = installer_repository
@@ -69,6 +74,7 @@ module Captain
       label             'Ubuntu'
       mirror_country    'US'
       output_directory  '.'
+      packages          []
       repositories      ['http://us.archive.ubuntu.com/ubuntu jaunty main']
       tasks             ['standard']
       tag               'captain'
