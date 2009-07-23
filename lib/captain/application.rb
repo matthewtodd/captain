@@ -29,9 +29,11 @@ module Captain
 
     def include_installer_and_its_supporting_files
       mirror, codename = installer_repository
+
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz').copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
-      # TODO write a preseed file
+      Resource.template('preseed.seed.erb', template_binding).copy_to(working_directory, 'install', 'preseed.seed')
+
       Resource.template('disk_base_components.erb', template_binding).copy_to(working_directory, '.disk', 'base_components')
       Resource.template('disk_base_installable.erb', template_binding).copy_to(working_directory, '.disk', 'base_installable')
       Resource.template('disk_cd_type.erb', template_binding).copy_to(working_directory, '.disk', 'cd_type')
@@ -53,7 +55,7 @@ module Captain
     end
 
     def iso_image_path
-      File.join(output_directory, "#{label.downcase}-#{version}-#{tag}-#{architecture}.iso")
+      File.join(output_directory, "#{label}-#{version}-#{tag}-#{architecture}.iso".downcase)
     end
 
     def template_binding
@@ -65,10 +67,12 @@ module Captain
 
       architecture      'i386'
       label             'Ubuntu'
+      mirror_country    'US'
       output_directory  '.'
       repositories      ['http://us.archive.ubuntu.com/ubuntu jaunty main']
-      selectors         ['^standard']
+      tasks             ['standard']
       tag               'captain'
+      time_zone         'UTC'
       version           '9.04'
       working_directory 'image'
     end
