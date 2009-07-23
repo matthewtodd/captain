@@ -35,15 +35,15 @@ module Captain
     def include_installer_and_its_supporting_files
       mirror, codename = installer_repository
 
-      Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz').copy_to(working_directory, 'install', 'vmlinuz')
+      Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz'  ).copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
-      Resource.template('preseed.seed.erb', template_binding).copy_to(working_directory, 'install', 'preseed.seed')
 
-      Resource.template('disk_base_components.erb', template_binding).copy_to(working_directory, '.disk', 'base_components')
+      Resource.template('preseed.seed.erb',          template_binding).copy_to(working_directory, 'install', 'preseed.seed')
+      Resource.template('disk_base_components.erb',  template_binding).copy_to(working_directory, '.disk', 'base_components')
       Resource.template('disk_base_installable.erb', template_binding).copy_to(working_directory, '.disk', 'base_installable')
-      Resource.template('disk_cd_type.erb', template_binding).copy_to(working_directory, '.disk', 'cd_type')
-      Resource.template('disk_info.erb', template_binding).copy_to(working_directory, '.disk', 'info')
-      Resource.template('disk_udeb_include.erb', template_binding).copy_to(working_directory, '.disk', 'udeb_include')
+      Resource.template('disk_cd_type.erb',          template_binding).copy_to(working_directory, '.disk', 'cd_type')
+      Resource.template('disk_info.erb',             template_binding).copy_to(working_directory, '.disk', 'info')
+      Resource.template('disk_udeb_include.erb',     template_binding).copy_to(working_directory, '.disk', 'udeb_include')
     end
 
     def include_boot_loader

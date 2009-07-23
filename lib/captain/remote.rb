@@ -14,7 +14,7 @@ module Captain
     def self.component_file(mirror, codename, component, architecture, *rest)
       uri    = component_uri(mirror, codename, component, architecture, *rest)
       path   = [component, "binary-#{architecture}", *rest].join('/')
-      md5sum = release_file(mirror, codename).grep(%r{\w{32}\s+#{path}}).first.split(' ').first
+      md5sum = release_file(mirror, codename).grep(%r{^ \w{32}\s+\d+\s+#{path}}).first.split(' ').first
       new(uri, Verifier::MD5.new(md5sum))
     end
 
@@ -62,30 +62,7 @@ module Captain
     alias_method :each, :each_line
 
     def gunzipped
-      Class.new do
-        include Enumerable
-
-        def initialize(stream)
-          @stream = stream
-        end
-
-        def each_line
-          open_stream do |stream|
-            stream.each_line do |line|
-              yield line
-            end
-          end
-        end
-        alias_method :each, :each_line
-
-        private
-
-        def open_stream
-          @stream.send(:open_stream) do |stream|
-            yield Zlib::GzipReader.new(stream)
-          end
-        end
-      end.new(self)
+      Adapter::Gunzip.new(self)
     end
 
     private
@@ -209,6 +186,33 @@ module Captain
       ensure
         from.rewind
         to.rewind if to.respond_to?(:rewind)
+      end
+    end
+
+    module Adapter
+      class Gunzip
+        include Enumerable
+
+        def initialize(stream)
+          @stream = stream
+        end
+
+        def each_line
+          open_stream do |stream|
+            stream.each_line do |line|
+              yield line
+            end
+          end
+        end
+        alias_method :each, :each_line
+
+        private
+
+        def open_stream
+          @stream.send(:open_stream) do |stream|
+            yield Zlib::GzipReader.new(stream)
+          end
+        end
       end
     end
 
