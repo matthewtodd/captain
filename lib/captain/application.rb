@@ -28,7 +28,7 @@ module Captain
     private
 
     def include_installer_and_its_supporting_files
-      mirror, codename = installer.split(' ')
+      mirror, codename = installer_repository
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz').copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
       # TODO write a preseed file
@@ -48,6 +48,10 @@ module Captain
       Image.new(working_directory).burn(iso_image_path)
     end
 
+    def installer_repository
+      repositories.first.split(' ').slice(0, 2)
+    end
+
     def iso_image_path
       File.join(output_directory, "#{label.downcase}-#{version}-#{tag}-#{architecture}.iso")
     end
@@ -60,7 +64,6 @@ module Captain
       @configuration = Hash.new
 
       architecture      'i386'
-      installer         'http://us.archive.ubuntu.com/ubuntu jaunty'
       label             'Ubuntu'
       output_directory  '.'
       repositories      ['http://us.archive.ubuntu.com/ubuntu jaunty main']
