@@ -1,19 +1,22 @@
+require 'digest'
 require 'open-uri'
 require 'pathname'
 require 'uri'
 
 module Captain
   class Remote
-    def self.cdrom_installer(mirror, codename, architecture, file)
-      md5sums = Hash.new
-      new("#{mirror}/dists/#{codename}/main/installer-#{architecture}/current/images/MD5SUMS").each_line do |line|
-        md5sum, path = line.split(' ')
-        md5sums[path.strip] = md5sum
-      end
-
-      verifier = Verifier::MD5.new(md5sums["./cdrom/#{file}"])
-      new("#{mirror}/dists/#{codename}/main/installer-#{architecture}/current/images/cdrom/#{file}", verifier)
+    def self.installer_file(mirror, codename, architecture, *rest)
+      uri        = installer_uri(mirror, codename, architecture, *rest)
+      md5sum_uri = installer_uri(mirror, codename, architecture, 'MD5SUMS')
+      md5sum     = new(md5sum_uri).grep(%r{#{rest.join('/')}}).first.split(' ').first
+      new(uri, Verifier::MD5.new(md5sum))
     end
+
+    def self.installer_uri(mirror, codename, architecture, *rest)
+      ["#{mirror}/dists/#{codename}/main/installer-#{architecture}/current/images", *rest].join('/')
+    end
+
+    include Enumerable
 
     def initialize(uri, verifier=Verifier::Content.new)
       @uri      = URI.parse(uri)
@@ -22,8 +25,11 @@ module Captain
     end
 
     def copy_to(*paths)
+      path = Pathname.new(File.join(paths))
+      path.dirname.mkpath
+
       open_stream do |stream|
-        File.open(File.join(paths, 'w')) do |file|
+        File.open(path, 'w') do |file|
           Stream.copy(stream, file)
         end
       end
@@ -36,6 +42,7 @@ module Captain
         end
       end
     end
+    alias_method :each, :each_line
 
     private
 
@@ -76,7 +83,8 @@ module Captain
 
       class MD5
         def initialize(expected)
-          @expected
+          @expected = expected
+          raise("No expected MD5Sum given.") unless @expected
         end
 
         def verify(stream)
@@ -99,6 +107,8 @@ module Captain
         PATH = Pathname.new(ENV['HOME']).join('.captain')
 
         def open(uri)
+          # I didn't expect to have to use string concatenation here, but PATH
+          # gets confused when uri.path starts with a /.
           path = PATH.join("#{uri.host}#{uri.path}")
           if path.exist?
             path.open('r+') { |cache| yield populatable(cache) }
@@ -154,7 +164,7 @@ module Captain
         to.send(method, buffer) while from.read(16384, buffer)
       ensure
         from.rewind
-        to.rewind
+        to.rewind if to.respond_to?(:rewind)
       end
     end
 

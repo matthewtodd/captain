@@ -29,8 +29,8 @@ module Captain
 
     def assemble_installer
       mirror, codename = installer.split(' ')
-      Remote.cdrom_installer(mirror, codename, architecture, 'vmlinuz').copy_to(working_directory, 'install', 'vmlinuz')
-      Remote.cdrom_installer(mirror, codename, architecture, 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
+      Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz').copy_to(working_directory, 'install', 'vmlinuz')
+      Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
     end
 
     def assemble_boot_loader

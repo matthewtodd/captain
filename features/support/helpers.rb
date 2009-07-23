@@ -1,6 +1,10 @@
 require 'tmpdir'
 
 module Helpers
+  def append_to_path(directory)
+    ENV['PATH'] = "#{ENV['PATH']}:#{directory}"
+  end
+
   def create_a_vmware_configuration_file(path, hard_disk_path, cdrom_iso_path)
     File.open(path, 'w') do |config|
       config.write ERB.new(File.read(__FILE__).split('__END__').last.strip).result(binding)
@@ -8,11 +12,13 @@ module Helpers
   end
 
   def create_an_empty_hard_disk_image(path)
-    system("/Applications/Q.app/Contents/MacOS/qemu-img create -f vmdk #{path} 512M > /dev/null") || raise('Could not create image.')
+    append_to_path('/Applications/Q.app/Contents/MacOS')
+    system("qemu-img create -f vmdk #{path} 512M > /dev/null") || raise('Could not create image.')
   end
 
   def launch_vmware(config_path)
-    system('/Library/Application Support/VMware Fusion/vmrun', '-T', 'fusion', 'start', config_path, 'gui') || raise('VMware Error.')
+    append_to_path('/Library/Application Support/VMware Fusion')
+    system("vmrun -T fusion start #{config_path} gui") || raise('VMware Error.')
   end
 
   def make_a_new_temporary_directory
