@@ -8,6 +8,10 @@ module Captain
       new(name)
     end
 
+    def self.template(name, binding)
+      Template.new(name, binding)
+    end
+
     def initialize(name)
       @name = name
     end
@@ -15,7 +19,24 @@ module Captain
     def copy_to(*paths)
       path = File.join(paths)
       FileUtils.mkpath(File.dirname(path))
-      File.open(path, 'w') { |f| f.write(PATH.join(@name).read) }
+      File.open(path, 'w') { |f| f.write(contents) }
+    end
+
+    private
+
+    def contents
+      PATH.join(@name).read
+    end
+
+    class Template < Resource
+      def initialize(name, binding)
+        super(name)
+        @binding = binding
+      end
+
+      def contents
+        ERB.new(super).result(@binding)
+      end
     end
   end
 end

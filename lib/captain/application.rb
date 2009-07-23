@@ -10,8 +10,8 @@ module Captain
     end
 
     def run
-      assemble_installer
-      assemble_boot_loader
+      include_installer_and_its_supporting_files
+      include_boot_loader
       create_iso_image
     end
 
@@ -27,13 +27,19 @@ module Captain
 
     private
 
-    def assemble_installer
+    def include_installer_and_its_supporting_files
       mirror, codename = installer.split(' ')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz').copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
+      # TODO write a preseed file
+      Resource.template('disk_base_components.erb', template_binding).copy_to(working_directory, '.disk', 'base_components')
+      Resource.template('disk_base_installable.erb', template_binding).copy_to(working_directory, '.disk', 'base_installable')
+      Resource.template('disk_cd_type.erb', template_binding).copy_to(working_directory, '.disk', 'cd_type')
+      Resource.template('disk_info.erb', template_binding).copy_to(working_directory, '.disk', 'info')
+      Resource.template('disk_udeb_include.erb', template_binding).copy_to(working_directory, '.disk', 'udeb_include')
     end
 
-    def assemble_boot_loader
+    def include_boot_loader
       Resource.file('isolinux.bin').copy_to(working_directory, 'isolinux', 'isolinux.bin')
       Resource.file('isolinux.cfg').copy_to(working_directory, 'isolinux', 'isolinux.cfg')
     end
@@ -44,6 +50,10 @@ module Captain
 
     def iso_image_path
       File.join(output_directory, "#{label.downcase}-#{version}-#{tag}-#{architecture}.iso")
+    end
+
+    def template_binding
+      binding
     end
 
     def load_default_configuration
