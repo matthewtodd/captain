@@ -52,7 +52,6 @@ module Captain
     end
 
     def select_packages_by_dependencies(packages, dependent_packages)
-      puts "dependent_packages are #{dependent_packages.map { |p| p.name }.inspect}"
       if dependent_packages.empty?
         []
       else

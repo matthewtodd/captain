@@ -1,3 +1,4 @@
+require 'erb'
 require 'tmpdir'
 
 module Helpers
@@ -22,10 +23,11 @@ module Helpers
   end
 
   def make_a_new_temporary_directory
-    directory = Dir.mktmpdir
-    # whacking the temp directory hamstrings vmware! is there something else we can do?
-    # at_exit { FileUtils.remove_entry_secure(directory) }
-    directory
+    # We don't arrange to whack the temporary directory at_exit because VMware
+    # may still be running. Instead, we just clear out tmp every so often.
+    local_temporary_directory = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'tmp'))
+    FileUtils.mkpath(local_temporary_directory)
+    Dir.mktmpdir('captain', local_temporary_directory)
   end
 end
 
