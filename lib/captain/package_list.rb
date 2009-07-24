@@ -8,8 +8,8 @@ module Captain
     end
 
     def copy_to(directory)
-      packages = select(all_packages)
-      packages.each { |package| package.copy_to(directory) }
+      releases = organize_into_releases(select(all_packages))
+      releases.each { |release| release.copy_to(directory) }
     end
 
     private
@@ -18,7 +18,7 @@ module Captain
       packages = []
       with_each_source_component do |mirror, codename, component|
         component_manifest(mirror, codename, component).each_package do |manifest|
-          packages.push(Package.new(mirror, manifest))
+          packages.push(Package.new(mirror, codename, component, manifest))
         end
       end
       packages
@@ -30,6 +30,14 @@ module Captain
       selected_by_dependencies             = select_packages_by_dependencies(remaining_by_name, selected_by_name)
 
       selected_by_task.concat(selected_by_name).concat(selected_by_dependencies)
+    end
+
+    def organize_into_releases(packages)
+      releases = []
+      packages.group_by { |package| package.codename }.each do |codename, packages|
+        releases.push(Release.new(codename, packages))
+      end
+      releases
     end
 
     def with_each_source_component

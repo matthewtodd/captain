@@ -2,13 +2,16 @@ require 'set'
 
 module Captain
   class Package
+    attr_reader :codename
+    attr_reader :component
     attr_reader :filename
     attr_reader :md5sum
     attr_reader :mirror
     attr_reader :name
 
-    def initialize(mirror, manifest)
+    def initialize(mirror, codename, component, manifest)
       @mirror       = mirror
+      @codename     = codename
       @manifest     = manifest
 
       @dependencies = Set.new
