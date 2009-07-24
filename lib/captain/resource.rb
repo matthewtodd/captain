@@ -1,3 +1,4 @@
+require 'erb'
 require 'pathname'
 
 module Captain

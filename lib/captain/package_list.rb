@@ -5,21 +5,30 @@ module Captain
       @architecture = architecture
       @tasks        = tasks
       @selectors    = selectors
-      @packages     = []
     end
 
     def copy_to(directory)
-      load_packages
+      packages = select(all_packages)
     end
 
     private
 
-    def load_packages
+    def all_packages
+      packages = []
       with_each_source_component do |mirror, codename, component|
         component_manifest(mirror, codename, component).each_package do |manifest|
-          add_package(manifest)
+          packages.push(Package.new(manifest))
         end
       end
+      packages
+    end
+
+    def select(packages)
+      selected_by_task, remaining_by_task  = select_packages_by_task(packages)
+      selected_by_name, remaining_by_name  = select_packages_by_name(remaining_by_task)
+      selected_by_dependencies             = select_packages_by_dependencies(remaining_by_name, selected_by_name)
+
+      selected_by_task.concat(selected_by_name).concat(selected_by_dependencies)
     end
 
     def with_each_source_component
@@ -34,8 +43,23 @@ module Captain
       ComponentManifestReader.new(stream)
     end
 
-    def add_package(manifest)
-      @packages.push(Package.new(manifest))
+    def select_packages_by_task(packages)
+      packages.partition { |package| !package.tasks.intersection(@tasks).empty? }
+    end
+
+    def select_packages_by_name(packages, names=@selectors)
+      packages.partition { |package| !package.name_and_provides.intersection(names).empty? }
+    end
+
+    def select_packages_by_dependencies(packages, dependent_packages)
+      puts "dependent_packages are #{dependent_packages.map { |p| p.name }.inspect}"
+      if dependent_packages.empty?
+        []
+      else
+        dependencies        = dependent_packages.map { |package| package.required_and_recommended_dependencies }.inject { |all, each| all.merge(each) }
+        selected, remaining = select_packages_by_name(packages, dependencies)
+        selected + select_packages_by_dependencies(remaining, selected)
+      end
     end
 
     class ComponentManifestReader

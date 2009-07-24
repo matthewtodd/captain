@@ -73,6 +73,8 @@ module Captain
           @verifier.verify(cache)
           yield(cache)
         rescue
+          puts $!.message
+          puts "Downloading..."
           begin
             @uri.open(ProgressMeter.new(@uri).to_open_uri_hash) do |stream|
               @verifier.verify(stream)
@@ -82,7 +84,7 @@ module Captain
           rescue SocketError, OpenURI::HTTPError, Verifier::Error
             retry_count -= 1
             raise if retry_count.zero?
-            puts "#{$!.message} #{@uri}"
+            puts $!.message
             puts "Trying again... (#{retry_count} more)"
             retry
           end

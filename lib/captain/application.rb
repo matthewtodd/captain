@@ -74,7 +74,7 @@ module Captain
       label             'Ubuntu'
       mirror_country    'US'
       output_directory  '.'
-      packages          []
+      packages          ['ruby']
       repositories      ['http://us.archive.ubuntu.com/ubuntu jaunty main']
       tasks             ['standard']
       tag               'captain'
