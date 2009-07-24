@@ -4,6 +4,9 @@ When /^I run captain$/ do
   @app.run
 end
 
+# Before, I had stubbed out all sorts of stuff with ShamRack. That got to be a
+# lot to maintain. So, now I just make sure I can actually boot up the
+# installation system.
 Then /^I should be able to launch the resulting image "(.+)"$/ do |image_name|
   vmware_directory = make_a_new_temporary_directory
   config_path      = File.join(vmware_directory, 'captain.vmx')
