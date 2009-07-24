@@ -79,24 +79,24 @@ module Captain
               cache.populate(stream)
               yield(cache)
             end
-          rescue Exception => exception
+          rescue SocketError, OpenURI::HTTPError, Verifier::Error
             retry_count -= 1
-            if retry_count.zero?
-              raise exception
-            else
-              puts "#{exception.message} #{@uri}"
-              puts "Trying again... (#{retry_count} more)"
-              retry
-            end
+            raise if retry_count.zero?
+            puts "#{$!.message} #{@uri}"
+            puts "Trying again... (#{retry_count} more)"
+            retry
           end
         end
       end
     end
 
     module Verifier
+      class Error < RuntimeError
+      end
+
       class Content
         def verify(stream)
-          raise("No content.") unless stream.read(1)
+          raise(Verifier::Error.new("No content.")) unless stream.read(1)
         ensure
           stream.rewind
         end
@@ -105,12 +105,12 @@ module Captain
       class MD5
         def initialize(expected)
           @expected = expected
-          raise("No expected MD5Sum given.") unless @expected
+          raise(Verifier::Error.new("No expected MD5Sum given.")) unless @expected
         end
 
         def verify(stream)
           actual = md5sum(stream)
-          raise("MD5Sum mismatch: expected #{@expected} but was #{actual}") unless @expected == actual
+          raise(Verifier::Error.new("MD5Sum mismatch: expected #{@expected} but was #{actual}")) unless @expected == actual
         end
 
         private
@@ -151,19 +151,26 @@ module Captain
     end
 
     class ProgressMeter
+      # For these ANSI escape sequences and more, see http://en.wikipedia.org/wiki/ANSI_escape_code
+      MOVE_CURSOR_UP_1_LINE   = "\e[1A"
+      ERASE_ENTIRE_LINE       = "\e[2K"
+      MOVE_CURSOR_TO_COLUMN_1 = "\e[1G" # columns are 1-based, oddly enough
+      OVERWRITE_PREVIOUS_LINE = "#{MOVE_CURSOR_UP_1_LINE}#{ERASE_ENTIRE_LINE}#{MOVE_CURSOR_TO_COLUMN_1}"
+
       def initialize(uri)
-        puts(uri)
+        puts uri
+        puts
       end
 
       def to_open_uri_hash
-        { :content_length_proc => method(:max), :progress_proc => method(:step) }
+        { :content_length_proc => method(:the_total_size_is), :progress_proc => method(:the_currently_downloaded_size_is) }
       end
 
-      def max(size)
-        @max = size
+      def the_total_size_is(size)
+        @total_size = size
       end
 
-      def step(size)
+      def the_currently_downloaded_size_is(size)
         @current = size
         report
       end
@@ -174,7 +181,8 @@ module Captain
       # TODO report time spent
       # TODO report time remaining
       def report
-        puts "  #{@current} of #{@max}\e[0F"
+        puts "#{OVERWRITE_PREVIOUS_LINE}  #{@current} of #{@total_size}"
+        $stdout.flush
       end
     end
 
