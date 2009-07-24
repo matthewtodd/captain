@@ -15,5 +15,6 @@ else
 end
 
 Shoe.tie('captain', '0.1.0', 'Loot apt repositories to build your own installer CD. Yarr.') do |spec|
+  spec.requirements = ['mkisofs']
   spec.add_development_dependency 'cucumber'
 end

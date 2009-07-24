@@ -2,10 +2,15 @@ require 'set'
 
 module Captain
   class Package
+    attr_reader :filename
+    attr_reader :md5sum
+    attr_reader :mirror
     attr_reader :name
 
-    def initialize(manifest)
+    def initialize(mirror, manifest)
+      @mirror       = mirror
       @manifest     = manifest
+
       @dependencies = Set.new
       @provides     = Set.new
       @recommends   = Set.new
@@ -15,6 +20,10 @@ module Captain
         case line
         when /^Depends:(.*)$/
           @dependencies.merge(parse_list($1))
+        when /^Filename:(.*)$/
+          @filename = $1.strip
+        when /^MD5sum:(.*)$/
+          @md5sum = $1.strip
         when /^Package:(.*)$/
           @name = $1.strip
         when /^Provides:(.*)$/
@@ -25,6 +34,10 @@ module Captain
           @tasks.merge(parse_list($1))
         end
       end
+    end
+
+    def copy_to(directory)
+      Remote.package_file(mirror, filename, md5sum).copy_to(directory, filename)
     end
 
     def tasks

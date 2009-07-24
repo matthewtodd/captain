@@ -33,7 +33,7 @@ module Captain
     end
 
     def include_installer_and_its_supporting_files
-      mirror, codename = installer_repository
+      mirror, codename = installer_repository_mirror_and_codename
 
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz'  ).copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
@@ -55,7 +55,7 @@ module Captain
       Image.new(working_directory).burn(iso_image_path)
     end
 
-    def installer_repository
+    def installer_repository_mirror_and_codename
       repositories.first.split(' ').slice(0, 2)
     end
 

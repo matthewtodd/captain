@@ -25,6 +25,10 @@ module Captain
       new(uri, Verifier::MD5.new(md5sum))
     end
 
+    def self.package_file(mirror, filename, md5sum)
+      new("#{mirror}/#{filename}", Verifier::MD5.new(md5sum))
+    end
+
     def self.component_uri(mirror, codename, component, architecture, *rest)
       ["#{mirror}/dists/#{codename}/#{component}/binary-#{architecture}", *rest].join('/')
     end
@@ -73,8 +77,6 @@ module Captain
           @verifier.verify(cache)
           yield(cache)
         rescue
-          puts $!.message
-          puts "Downloading..."
           begin
             @uri.open(ProgressMeter.new(@uri).to_open_uri_hash) do |stream|
               @verifier.verify(stream)

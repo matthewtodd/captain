@@ -9,6 +9,7 @@ module Captain
 
     def copy_to(directory)
       packages = select(all_packages)
+      packages.each { |package| package.copy_to(directory) }
     end
 
     private
@@ -17,7 +18,7 @@ module Captain
       packages = []
       with_each_source_component do |mirror, codename, component|
         component_manifest(mirror, codename, component).each_package do |manifest|
-          packages.push(Package.new(manifest))
+          packages.push(Package.new(mirror, manifest))
         end
       end
       packages
