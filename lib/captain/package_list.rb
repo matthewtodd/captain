@@ -14,7 +14,7 @@ module Captain
     private
 
     def each_release
-      winnow_down(all_packages).group_by { |package| package.codename }.each do |codename, packages|
+      winnow_down(deb_packages).concat(udeb_packages).group_by { |package| package.codename }.each do |codename, packages|
         yield Release.new(codename, @architecture, packages)
       end
     end
@@ -49,17 +49,22 @@ module Captain
       packages.map { |package| package.required_and_recommended_dependencies }.inject { |all, each| all.merge(each) }
     end
 
-    def all_packages
-      all_components.map { |component| component.packages }.flatten
+    def deb_packages
+      deb_components.map { |component| component.packages }.flatten
     end
 
-    def all_components
+    def deb_components
       @sources.map do |source|
         mirror, codename, *components = source.split(' ')
         components.map do |component|
           ComponentManifest.new(mirror, codename, component, @architecture)
         end
       end.flatten
+    end
+
+    def udeb_packages
+      mirror, codename, *components = @sources.first.split(' ')
+      ComponentManifest.new(mirror, codename, 'main/debian-installer', @architecture).packages
     end
 
     class ComponentManifest
