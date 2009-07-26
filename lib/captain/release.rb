@@ -1,53 +1,74 @@
+require 'digest'
+require 'pathname'
 require 'zlib'
 
 module Captain
   class Release
+    attr_reader :architecture
+    attr_reader :codename
+    attr_reader :components
+
     def initialize(codename, architecture, packages)
       @codename     = codename
       @architecture = architecture
       @components   = organize_into_components(packages)
+      @packages     = packages
     end
 
-    def copy_to(directory)
-      @components.each { |component| component.copy_to(directory) }
-      # TODO write Release file
+    def copy_to(directory, config)
+      directory = Pathname.new(directory)
+
+      @packages.each   { |p| p.copy_to(directory) }
+      @components.each { |c| c.copy_to(directory.join('dists', @codename)) }
+
+      Resource.template('Release.erb', binding).copy_to(directory.join('dists', @codename, 'Release'))
     end
 
     private
 
     def organize_into_components(packages)
-      components = []
-      packages.group_by { |package| package.component }.each do |name, packages|
-        components.push(Component.new(@codename, name, @architecture, packages))
+      packages.group_by { |package| package.component }.map do |name, packages|
+        Component.new(name, @architecture, packages)
       end
-      components
     end
 
     class Component
-      def initialize(codename, name, architecture, packages)
-        @codename     = codename
+      attr_reader :name
+
+      def initialize(name, architecture, packages)
         @name         = name
         @architecture = architecture
-        @packages     = packages
+        @manifest     = gzipped_manifest(packages)
       end
 
       def copy_to(directory)
-        @packages.each { |package| package.copy_to(directory) }
+        path = Pathname.new(directory).join(manifest_path)
+        path.dirname.mkpath
+        path.open('w') { |file| file.write(@manifest) }
+      end
 
-        full_manifest_path = File.join(directory, 'dists', @codename, manifest_path)
-        FileUtils.mkpath(File.dirname(full_manifest_path))
-        File.open(full_manifest_path, 'w') do |file|
-          begin
-            stream = Zlib::GzipWriter.new(file)
-            @packages.each { |package| package.copy_manifest_to(stream) }
-          ensure
-            stream.close
-          end
-        end
+      def manifest_checksum(algorithm)
+        Digest(algorithm).hexdigest(@manifest)
       end
 
       def manifest_path
         "#{@name}/binary-#{@architecture}/Packages.gz"
+      end
+
+      def manifest_size
+        @manifest.length
+      end
+
+      private
+
+      def gzipped_manifest(packages)
+        buffer = ''
+        StringIO.open(buffer) do |stream|
+          gzip = Zlib::GzipWriter.new(stream)
+          packages.each { |package| package.copy_manifest_to(stream) }
+          gzip.close
+        end
+        buffer
       end
     end
 

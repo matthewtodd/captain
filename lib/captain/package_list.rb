@@ -7,8 +7,8 @@ module Captain
       @selectors    = selectors
     end
 
-    def copy_to(directory)
-      each_release { |release| release.copy_to(directory) }
+    def copy_to(directory, configuration)
+      each_release { |release| release.copy_to(directory, configuration) }
     end
 
     private

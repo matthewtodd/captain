@@ -12,6 +12,7 @@ module Captain
     def initialize(mirror, codename, component, manifest)
       @mirror       = mirror
       @codename     = codename
+      @component    = component
       @manifest     = manifest
 
       @dependencies = Set.new
