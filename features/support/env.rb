@@ -1,9 +1,9 @@
 require 'pathname'
+root = Pathname.new(__FILE__).dirname.parent.parent
 
-project_root = Pathname.new(__FILE__).dirname.parent.parent
-$LOAD_PATH.unshift(project_root.join('lib'))
+$LOAD_PATH.unshift(root.join('lib'))
 require 'captain'
 
-project_root.join('tmp').rmtree
+root.join('tmp').rmtree if root.join('tmp').directory?
 
 Before { @app = Captain::Application.new }

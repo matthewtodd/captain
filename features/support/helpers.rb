@@ -3,7 +3,7 @@ require 'tmpdir'
 
 module Helpers
   def append_to_path(directory)
-    ENV['PATH'] = "#{ENV['PATH']}:#{directory}"
+    ENV['PATH'] = "#{ENV['PATH']}:#{directory}" if File.directory?(directory)
   end
 
   def create_a_vmware_configuration_file(path, hard_disk_path, cdrom_iso_path)

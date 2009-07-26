@@ -43,6 +43,12 @@ module Captain
       Remote.package_file(mirror, filename, md5sum).copy_to(directory, filename)
     end
 
+    def copy_manifest_to(stream)
+      # Just making sure we don't end up with extra newlines. Postel's law and all that.
+      stream.puts(@manifest.strip)
+      stream.puts
+    end
+
     def tasks
       @tasks
     end
