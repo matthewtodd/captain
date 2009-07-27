@@ -14,7 +14,7 @@ module Captain
       @version      = version
       @architecture = architecture
       @components   = organize_into_components(packages)
-      @packages     = packages
+      @packages     = packages.sort_by { |p| p.filename }
     end
 
     def copy_to(directory, config)

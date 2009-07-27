@@ -83,7 +83,7 @@ module Captain
               cache.populate(stream)
               yield(cache)
             end
-          rescue SocketError, Timeout::Error, OpenURI::HTTPError, Verifier::Error
+          rescue Errno::ECONNRESET, OpenURI::HTTPError, SocketError, Timeout::Error, Verifier::Error
             retry_count -= 1
             raise if retry_count.zero?
             puts $!.message
