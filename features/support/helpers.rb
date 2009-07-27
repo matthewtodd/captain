@@ -7,8 +7,10 @@ module Helpers
   end
 
   def create_a_vmware_configuration_file(path, hard_disk_path, cdrom_iso_path)
+    template = File.read(__FILE__).split('__END__').last.strip
+
     File.open(path, 'w') do |config|
-      config.write ERB.new(File.read(__FILE__).split('__END__').last.strip).result(binding)
+      config.write ERB.new(template).result(binding)
     end
   end
 
@@ -23,8 +25,7 @@ module Helpers
   end
 
   def make_a_new_temporary_directory
-    # We don't arrange to whack the temporary directory at_exit because VMware
-    # may still be running. Instead, we just clear out tmp every so often.
+    # Don't whack the temporary directory at_exit; VMware may be running.
     local_temporary_directory = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'tmp'))
     FileUtils.mkpath(local_temporary_directory)
     Dir.mktmpdir('captain', local_temporary_directory)
@@ -42,7 +43,7 @@ ide0:0.fileName = "<%= hard_disk_path %>"
 ide1:0.present = "TRUE"
 ide1:0.fileName = "<%= cdrom_iso_path %>"
 ide1:0.deviceType = "cdrom-image"
-floppy0.present = "FALSE"
+floppy0.present = "TRUE"
 ethernet0.present = "TRUE"
 usb.present = "TRUE"
 sound.present = "FALSE"

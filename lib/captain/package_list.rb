@@ -8,14 +8,20 @@ module Captain
     end
 
     def copy_to(directory, configuration)
+      capture_version_number(@sources.first)
       each_release { |release| release.copy_to(directory, configuration) }
     end
 
     private
 
+    def capture_version_number(repository)
+      mirror, codename, *components = repository.split(' ')
+      @version = Remote.release_file(mirror, codename).grep(/^Version: /).first.split(/\s+/).last.strip
+    end
+
     def each_release
       winnow_down(deb_packages).concat(udeb_packages).group_by { |package| package.codename }.each do |codename, packages|
-        yield Release.new(codename, @architecture, packages)
+        yield Release.new(codename, @version, @architecture, packages)
       end
     end
 

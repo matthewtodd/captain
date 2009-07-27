@@ -10,6 +10,7 @@ module Captain
     end
 
     def run
+      include_config_directory
       include_packages
       include_installer_and_its_supporting_files
       include_boot_loader
@@ -28,8 +29,13 @@ module Captain
 
     private
 
+    # This is a convenient way to put arbitrary content on the disk.
+    def include_config_directory
+      FileUtils.cp_r('config', working_directory) if File.directory?('config')
+    end
+
     def include_packages
-      PackageList.new(repositories, architecture, tasks, packages).copy_to(working_directory, self)
+      PackageList.new(repositories, architecture, tasks, select_packages.concat(install_packages)).copy_to(working_directory, self)
     end
 
     def include_installer_and_its_supporting_files
@@ -70,18 +76,17 @@ module Captain
     def load_default_configuration
       @configuration = Hash.new
 
-      architecture      'i386'
-      label             'Ubuntu'
-      mirror_country    'US'
-      output_directory  '.'
-      origin            'Ubuntu' # FIXME what should we use for the origin
-      packages          ['ruby']
-      repositories      ['http://us.archive.ubuntu.com/ubuntu jaunty main']
-      tasks             ['standard']
-      tag               'captain'
-      time_zone         'UTC'
-      version           '9.04'
-      working_directory 'image'
+      architecture          'i386'
+      select_packages       []
+      install_packages      []
+      label                 'Ubuntu'
+      output_directory      '.'
+      origin                'Ubuntu' # FIXME what should we use for the default origin?
+      post_install_commands []
+      repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main']
+      tasks                 ['standard']
+      tag                   'captain'
+      working_directory     'image'
     end
 
     def load_configuration

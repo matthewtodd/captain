@@ -9,11 +9,11 @@ d-i netcfg/dhcp_failed note
 d-i netcfg/dhcp_options select Configure network manually
 
 ### Mirror settings
-d-i mirror/country string <%= mirror_country %>
+d-i mirror/country string US
 
 ### Clock and time zone setup
 d-i clock-setup/utc boolean true
-d-i time/zone string <%= time_zone %>
+d-i time/zone string UTC
 d-i clock-setup/ntp boolean false
 
 ### Partitioning
@@ -33,15 +33,11 @@ d-i passwd/make-user boolean false
 ### Apt setup
 d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect
-<%# FIXME configure apt preseed for the on-disk repositories %>
-d-i apt-setup/local0/repository string file:/opt/local/var/lib/apt/packages intrepid main universe
-d-i apt-setup/local0/source boolean false
-d-i apt-setup/local1/repository string file:/opt/local/var/lib/apt/packages intrepid-updates main universe
-d-i apt-setup/local1/source boolean false
 d-i debian-installer/allow_unauthenticated string true
 
 ### Package selection
-tasksel tasksel/first multiselect <%= tasks.join(' ') %>
+tasksel tasksel/first multiselect standard
+d-i pkgsel/include string <%= install_packages.join(' ') %>
 d-i pkgsel/update-policy select none
 
 ### Boot loader installation
@@ -50,7 +46,7 @@ d-i grub-installer/with_other_os boolean true
 
 ### Finishing up the installation
 d-i finish-install/reboot_in_progress note
-d-i cdrom-detect/eject boolean true
+d-i cdrom-detect/eject boolean false
 
 ### X configuration
 
@@ -59,7 +55,4 @@ user-setup-udeb user-setup/encrypted-private boolean false
 
 #### Advanced options
 ### Running custom commands during the installation
-# This copies our packages into /opt, disables CD in sources.list (only
-# happens automatically given http & ftp sources; we just have file),
-# and overrides requirement for signed packages
-d-i preseed/late_command string echo 'APT::Get::AllowUnauthenticated 1;' > /target/etc/apt/apt.conf.d/99allow_unauthenticated; mkdir -p /target/opt/local/var/lib/apt/packages; cp -r /cdrom/dists /cdrom/pool /target/opt/local/var/lib/apt/packages; sed -i "/^deb cdrom:/s/^/#/" /target/etc/apt/sources.list; in-target apt-get update
+d-i preseed/late_command string <%= post_install_commands.join('; ') %>
