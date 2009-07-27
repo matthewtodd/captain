@@ -86,6 +86,7 @@ module Captain
       repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main']
       tasks                 ['standard']
       tag                   'captain'
+      version               '9.04'
       working_directory     'image'
     end
 

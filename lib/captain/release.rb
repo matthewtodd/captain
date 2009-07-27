@@ -7,11 +7,9 @@ module Captain
     attr_reader :architecture
     attr_reader :codename
     attr_reader :components
-    attr_reader :version
 
-    def initialize(codename, version, architecture, packages)
+    def initialize(codename, architecture, packages)
       @codename     = codename
-      @version      = version
       @architecture = architecture
       @components   = organize_into_components(packages)
       @packages     = packages.sort_by { |p| p.filename }
