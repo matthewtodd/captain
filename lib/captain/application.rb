@@ -14,6 +14,7 @@ module Captain
       include_packages
       include_installer_and_its_supporting_files
       include_boot_loader
+      include_ubuntu_symlink
       create_iso_image
     end
 
@@ -55,6 +56,12 @@ module Captain
     def include_boot_loader
       Resource.file('isolinux.bin').copy_to(working_directory, 'isolinux', 'isolinux.bin')
       Resource.file('isolinux.cfg').copy_to(working_directory, 'isolinux', 'isolinux.cfg')
+    end
+
+    def include_ubuntu_symlink
+      Dir.chdir(working_directory) do
+        FileUtils.symlink('.', 'ubuntu')
+      end
     end
 
     def create_iso_image

@@ -16,7 +16,7 @@ module Helpers
 
   def create_an_empty_hard_disk_image(path)
     append_to_path('/Applications/Q.app/Contents/MacOS')
-    system("qemu-img create -f vmdk #{path} 512M > /dev/null") || raise('Could not create image.')
+    system("qemu-img create -f vmdk #{path} 2G > /dev/null") || raise('Could not create image.')
   end
 
   def launch_vmware(config_path)
@@ -37,6 +37,7 @@ World(Helpers)
 __END__
 config.version = "8"
 virtualHW.version = "7"
+scsi0.present = "FALSE"
 memsize = "512"
 ide0:0.present = "TRUE"
 ide0:0.fileName = "<%= hard_disk_path %>"

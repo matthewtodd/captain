@@ -21,7 +21,7 @@ module Captain
       @packages.each   { |p| p.copy_to(directory) }
       @components.each { |c| c.copy_to(directory.join('dists', @codename)) }
 
-      Resource.template('Release.erb', binding).copy_to(directory.join('dists', @codename, 'Release'))
+      Resource.template('release.erb', binding).copy_to(directory.join('dists', @codename, 'Release'))
     end
 
     private
@@ -44,6 +44,7 @@ module Captain
         @name    = name
         manifest = manifest(packages)
         @files   = []
+        @files.push Manifest.new("#{name}/binary-#{architecture}/Release", Resource.template('release_component.erb', binding).contents)
         @files.push Manifest.new("#{name}/binary-#{architecture}/Packages", manifest)
         @files.push Manifest.new("#{name}/binary-#{architecture}/Packages.gz", gzip(manifest))
       end

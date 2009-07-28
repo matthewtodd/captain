@@ -17,6 +17,10 @@ module Captain
       @name = name
     end
 
+    def contents
+      PATH.join(@name).read
+    end
+
     def copy_to(*paths)
       path = File.join(paths)
       FileUtils.mkpath(File.dirname(path))
@@ -24,10 +28,6 @@ module Captain
     end
 
     private
-
-    def contents
-      PATH.join(@name).read
-    end
 
     class Template < Resource
       def initialize(name, binding)
