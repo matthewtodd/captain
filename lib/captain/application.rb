@@ -91,7 +91,7 @@ module Captain
       origin                'Ubuntu' # FIXME what should we use for the default origin?
       post_install_commands []
       repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main']
-      tasks                 ['standard']
+      tasks                 ['minimal', 'standard']
       tag                   'captain'
       version               '9.04'
       working_directory     'image'
