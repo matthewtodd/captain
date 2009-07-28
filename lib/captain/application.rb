@@ -10,7 +10,7 @@ module Captain
     end
 
     def run
-      include_config_directory
+      include_bundle_directory
       include_packages
       include_installer_and_its_supporting_files
       include_boot_loader
@@ -32,7 +32,7 @@ module Captain
 
     # This is a convenient way to put arbitrary content on the disk.
     def include_config_directory
-      FileUtils.cp_r('config', working_directory) if File.directory?('config')
+      FileUtils.cp_r('bundle', working_directory) if File.directory?('bundle')
     end
 
     def include_packages
