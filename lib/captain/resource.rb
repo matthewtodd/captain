@@ -36,7 +36,7 @@ module Captain
       end
 
       def contents
-        ERB.new(super).result(@binding)
+        ERB.new(super, nil, '<>').result(@binding)
       end
     end
   end

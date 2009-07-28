@@ -32,43 +32,67 @@ module Captain
       end
     end
 
+    def deb_components
+      @components.reject { |c| c.udeb? }
+    end
+
     class Component
       attr_reader :name
+      attr_reader :files
 
       def initialize(name, architecture, packages)
-        @name         = name
-        @architecture = architecture
-        @manifest     = gzipped_manifest(packages)
+        @name    = name
+        manifest = manifest(packages)
+        @files   = []
+        @files.push Manifest.new("#{name}/binary-#{architecture}/Packages", manifest)
+        @files.push Manifest.new("#{name}/binary-#{architecture}/Packages.gz", gzip(manifest))
       end
 
       def copy_to(directory)
-        path = Pathname.new(directory).join(manifest_path)
-        path.dirname.mkpath
-        path.open('w') { |file| file.write(@manifest) }
+        files.each { |file| file.copy_to(directory) }
       end
 
-      def manifest_checksum(algorithm)
-        Digest(algorithm).hexdigest(@manifest)
-      end
-
-      def manifest_path
-        "#{@name}/binary-#{@architecture}/Packages.gz"
-      end
-
-      def manifest_size
-        @manifest.length
+      def udeb?
+        name =~ /debian-installer/
       end
 
       private
 
-      def gzipped_manifest(packages)
-        buffer = ''
-        StringIO.open(buffer) do |stream|
-          gzip = Zlib::GzipWriter.new(stream)
-          packages.each { |package| package.copy_manifest_to(stream) }
-          gzip.close
+      def manifest(packages)
+        io = StringIO.new
+        packages.each { |package| package.copy_manifest_to(io) }
+        io.string
+      end
+
+      def gzip(string)
+        io = StringIO.new
+        gzip = Zlib::GzipWriter.new(io)
+        gzip.write(string)
+        gzip.close
+        io.string
+      end
+
+      class Manifest
+        attr_reader :path
+
+        def initialize(path, contents)
+          @path     = path
+          @contents = contents
         end
-        buffer
+
+        def copy_to(directory)
+          file = Pathname.new(directory).join(path)
+          file.dirname.mkpath
+          file.open('w') { |io| io.write(@contents) }
+        end
+
+        def checksum(algorithm)
+          Digest(algorithm).hexdigest(@contents)
+        end
+
+        def size
+          @contents.length
+        end
       end
     end
 

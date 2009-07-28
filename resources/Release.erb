@@ -5,8 +5,11 @@ Version: <%= config.version %>
 Codename: <%= codename %>
 Date: <%= Time.now.utc.strftime('%a, %e %b %Y %H:%M:%S UTC') %>
 Architectures: <%= architecture %>
-Components: <%= components.map { |c| c.name }.join(' ') %>
-Description: <%= config.label %> <%= codename.capitalize %> <%= config.version %> <%= config.tag.capitalize %>
-MD5Sum:<% components.each do |component| %>
- <%= component.manifest_checksum('MD5') %> <%= component.manifest_size %> <%= component.manifest_path %>
+Components: <%= deb_components.map { |c| c.name }.join(' ') %>
+Description: <%= config.label %> <%= config.version %> <%= codename.capitalize %> <%= config.tag.capitalize %>
+MD5Sum:
+<% components.each do |component| %>
+<% component.files.each do |file| %>
+  <%= file.checksum('MD5') %> <%= file.size %> <%= file.path %>
+<% end %>
 <% end %>
