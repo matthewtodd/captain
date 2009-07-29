@@ -10,11 +10,11 @@ module Captain
     end
 
     def run
-      include_bundle_directory
-      include_packages
-      include_installer_and_its_supporting_files
-      include_boot_loader
-      include_ubuntu_symlink
+      create_bundle_directory
+      create_packages
+      create_installer_and_its_supporting_files
+      create_boot_loader
+      create_ubuntu_symlink
       create_iso_image
     end
 
@@ -31,15 +31,15 @@ module Captain
     private
 
     # This is a convenient way to put arbitrary content on the disk.
-    def include_config_directory
+    def create_bundle_directory
       FileUtils.cp_r('bundle', working_directory) if File.directory?('bundle')
     end
 
-    def include_packages
-      PackageList.new(repositories, architecture, tasks, select_packages.concat(install_packages)).copy_to(working_directory, self)
+    def create_packages
+      PackageList.new(repositories, architecture, tasks, include_packages.concat(install_packages)).copy_to(working_directory, self)
     end
 
-    def include_installer_and_its_supporting_files
+    def create_installer_and_its_supporting_files
       mirror, codename = installer_repository_mirror_and_codename
 
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz'  ).copy_to(working_directory, 'install', 'vmlinuz')
@@ -53,12 +53,12 @@ module Captain
       Resource.template('disk_udeb_include.erb',     template_binding).copy_to(working_directory, '.disk', 'udeb_include')
     end
 
-    def include_boot_loader
+    def create_boot_loader
       Resource.file('isolinux.bin').copy_to(working_directory, 'isolinux', 'isolinux.bin')
       Resource.file('isolinux.cfg').copy_to(working_directory, 'isolinux', 'isolinux.cfg')
     end
 
-    def include_ubuntu_symlink
+    def create_ubuntu_symlink
       Dir.chdir(working_directory) do
         FileUtils.symlink('.', 'ubuntu')
       end
@@ -84,11 +84,10 @@ module Captain
       @configuration = Hash.new
 
       architecture          'i386'
-      select_packages       []
+      include_packages      ['linux-image-server']
       install_packages      []
       label                 'Ubuntu'
       output_directory      '.'
-      origin                'Ubuntu' # FIXME what should we use for the default origin?
       post_install_commands []
       repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main']
       tasks                 ['minimal', 'standard']
