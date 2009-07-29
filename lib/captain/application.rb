@@ -84,7 +84,7 @@ module Captain
       @configuration = Hash.new
 
       architecture          'i386'
-      include_packages      ['linux-image-server']
+      include_packages      ['linux-image-server', 'language-support-en']
       install_packages      []
       label                 'Ubuntu'
       output_directory      '.'

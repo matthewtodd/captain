@@ -46,7 +46,7 @@ module Captain
 
     def dependencies_of(packages)
       # We have todo this goofy inject instead of a simple flatten because the dependencies are returned as Sets.
-      packages.map { |package| package.required_and_recommended_dependencies }.inject { |all, each| all.merge(each) }
+      packages.map { |package| package.dependencies }.inject { |all, each| all.merge(each) }
     end
 
     def deb_packages

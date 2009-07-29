@@ -4,6 +4,7 @@ module Captain
   class Package
     attr_reader :codename
     attr_reader :component
+    attr_reader :dependencies
     attr_reader :filename
     attr_reader :md5sum
     attr_reader :mirror
@@ -56,10 +57,6 @@ module Captain
 
     def name_and_provides
       @name_and_provides ||= @provides.dup.add(@name)
-    end
-
-    def required_and_recommended_dependencies
-      @required_and_recommended_dependencies ||= @dependencies.dup.merge(@recommends)
     end
 
     private
