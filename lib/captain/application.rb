@@ -104,7 +104,7 @@ module Captain
 
     def temporary_directory
       temporary_directory = Dir.mktmpdir('captain')
-      at_exit { FileUtil.remove_entry_secure(temporary_directory) }
+      at_exit { FileUtils.remove_entry_secure(temporary_directory) }
       temporary_directory
     end
   end
