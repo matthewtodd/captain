@@ -1,3 +1,5 @@
+require 'tmpdir'
+
 module Captain
   class Application
     def self.run
@@ -84,7 +86,7 @@ module Captain
       @configuration = Hash.new
 
       architecture          'i386'
-      include_packages      ['linux-server', 'language-support-en']
+      include_packages      ['linux-server', 'language-support-en', 'grub']
       install_packages      []
       label                 'Ubuntu'
       output_directory      '.'
@@ -93,11 +95,17 @@ module Captain
       tasks                 ['minimal', 'standard']
       tag                   'captain'
       version               '9.04'
-      working_directory     'image'
+      working_directory     temporary_directory
     end
 
     def load_configuration
       instance_eval(File.read('config/captain.rb')) if File.exist?('config/captain.rb')
+    end
+
+    def temporary_directory
+      temporary_directory = Dir.mktmpdir('captain')
+      at_exit { FileUtil.remove_entry_secure(temporary_directory) }
+      temporary_directory
     end
   end
 end

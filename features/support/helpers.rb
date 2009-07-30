@@ -1,5 +1,4 @@
 require 'erb'
-require 'tmpdir'
 
 module Helpers
   def append_to_path(directory)
@@ -23,13 +22,6 @@ module Helpers
     append_to_path('/Library/Application Support/VMware Fusion')
     system("vmrun -T fusion start #{config_path} gui") || raise('VMware Error.')
   end
-
-  def make_a_new_temporary_directory
-    # Don't whack the temporary directory at_exit; VMware may be running.
-    local_temporary_directory = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'tmp'))
-    FileUtils.mkpath(local_temporary_directory)
-    Dir.mktmpdir('captain', local_temporary_directory)
-  end
 end
 
 World(Helpers)
@@ -51,4 +43,4 @@ sound.present = "FALSE"
 displayName = "Captain - Cucumber"
 guestOS = "ubuntu"
 nvram = "captain.nvram"
-workingDir = "<%= File.dirname(path) %>"
+workingDir = "<%= path.dirname %>"

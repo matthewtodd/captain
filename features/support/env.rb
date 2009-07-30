@@ -4,6 +4,8 @@ root = Pathname.new(__FILE__).dirname.parent.parent
 $LOAD_PATH.unshift(root.join('lib'))
 require 'captain'
 
-root.join('tmp').rmtree if root.join('tmp').directory?
-
-Before { @app = Captain::Application.new }
+Before do
+  root.join('tmp').rmtree if root.join('tmp').directory?
+  @app = Captain::Application.new
+  @app.output_directory('tmp')
+end
