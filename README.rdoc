@@ -1,3 +1,65 @@
 = Captain
 
-Nothing to see here, move along...
+Captain builds an Ubuntu installation CD just as you like it.
+
+It gathers packages from any number of repositories, preseeds almost all of the installer questions, and runs on any platform with <tt>mkisofs</tt> (including OSX).
+
+== Behold
+
+With no external configuration, Captain builds an i386 Jaunty CD:
+
+ $ captain
+ ...
+ $ ls
+ ubuntu-9.04-captain-i386.iso
+ $
+
+== Install
+
+Captain uses <tt>mkisofs</tt> to burn the final image.
+
+On OSX, you can get this with
+
+  port install cdrtools
+
+And then you're good to go:
+
+  gem sources --add http://gems.github.com
+  gem install matthewtodd-captain
+
+== Configure
+
+Captain looks for <tt>config/captain.rb</tt> under the current directory.
+
+Here are the defaults:
+
+ architecture          'i386'
+ include_packages      ['linux-server', 'language-support-en', 'grub']
+ install_packages      []
+ label                 'Ubuntu'
+ output_directory      '.'
+ post_install_commands []
+ repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted']
+ tasks                 ['minimal', 'standard']
+ tag                   'captain'
+ version               '9.04'
+ working_directory     temporary_directory
+
+There are a few things you'll need to be careful with, for now:
+
++repositories+:: By convention, the installation system and udeb packages will be pulled from the first repository in the list. So you'll want to make sure the first repository is a full-fledged Ubuntu repository.
++tasks+:: <b>MUST include <tt>'minimal'</tt></b>, else the installer will die with the maddeningly not-at-all-the-problem <tt>"failure trying to run: chroot /target mount -t proc proc /proc"</tt>
++include_packages+:: MUST include a kernel, some language-support package, and grub; else the installer will complain.
++version+:: Could be determined automatically from, say, the <tt>Release</tt> file in the first repository. But it isn't yet, so beware of the duplication.
+
+See the examples[http://github.com/matthewtodd/captain/tree/master/examples] folder for more.
+
+== Preseeding
+
+See resources/preseed.seed.erb[http://github.com/matthewtodd/captain/blob/master/resources/preseed.seed.erb]. There may be a few controversial decisions in there that could use some configuring: there's just one monolithic disk partition, no "regular" user created, and no http mirrors included in <tt>/etc/apt/sources.list</tt>.
+
+Other than the disk partitioning, I suppose most of these things could be handled post-install, though I'm glad to accept patches / suggestions adding the configuration options you need.
+
+== Network Cache
+
+Captain caches everything it downloads from the network in <tt>$HOME/.captain</tt>.
