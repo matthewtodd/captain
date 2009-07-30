@@ -32,7 +32,7 @@ module Captain
     end
 
     def select_packages_by_name(pool, names=@selectors)
-      pool.partition { |package| !package.name_and_provides.intersection(names).empty? }
+      pool.partition { |package| names.include?(package.name) }
     end
 
     def select_packages_by_dependencies(pool, dependent_packages)

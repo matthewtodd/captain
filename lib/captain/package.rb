@@ -9,6 +9,7 @@ module Captain
     attr_reader :md5sum
     attr_reader :mirror
     attr_reader :name
+    attr_reader :tasks
 
     def initialize(mirror, codename, component, manifest)
       @mirror       = mirror
@@ -31,8 +32,6 @@ module Captain
           @md5sum = $1.strip
         when /^Package:(.*)$/
           @name = $1.strip
-        when /^Provides:(.*)$/
-          @provides.merge(parse_list($1))
         when /^Recommends:(.*)$/
           @recommends.merge(parse_list($1))
         when /^Task:(.*)$/
@@ -49,14 +48,6 @@ module Captain
       # Just making sure we don't end up with extra newlines. Postel's law and all that.
       stream.puts(@manifest.strip)
       stream.puts
-    end
-
-    def tasks
-      @tasks
-    end
-
-    def name_and_provides
-      @name_and_provides ||= @provides.dup.add(@name)
     end
 
     private

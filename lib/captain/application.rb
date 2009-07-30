@@ -67,11 +67,15 @@ module Captain
     end
 
     def create_iso_image
-      Image.new(working_directory).burn(iso_image_path)
+      Image.new(working_directory).burn(iso_image_path, iso_image_name)
     end
 
     def installer_repository_mirror_and_codename
       repositories.first.split(' ').slice(0, 2)
+    end
+
+    def iso_image_name
+      "#{label} #{version} #{tag.capitalize}"
     end
 
     def iso_image_path

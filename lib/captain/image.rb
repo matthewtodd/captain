@@ -6,7 +6,7 @@ module Captain
       @base_directory = base_directory
     end
 
-    def burn(path)
+    def burn(path, name)
       path = Pathname.new(path)
       path.parent.mkpath unless path.parent.directory?
 
@@ -21,7 +21,7 @@ module Captain
         '-no-emul-boot',
         '-output', path,
         '-rational-rock',
-        '-volid', 'Name',
+        '-volid', name,
         @base_directory) || raise('Error creating iso image.')
     end
   end
