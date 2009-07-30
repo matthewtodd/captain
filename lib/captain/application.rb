@@ -84,12 +84,12 @@ module Captain
       @configuration = Hash.new
 
       architecture          'i386'
-      include_packages      ['linux-image-server', 'language-support-en']
+      include_packages      ['linux-server', 'language-support-en']
       install_packages      []
       label                 'Ubuntu'
       output_directory      '.'
       post_install_commands []
-      repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main']
+      repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted']
       tasks                 ['minimal', 'standard']
       tag                   'captain'
       version               '9.04'
