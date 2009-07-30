@@ -1,3 +1,11 @@
+# This file is lifted from my first use case for Captain, bringing up a server
+# with the chef gems installed, so that I can then run something like
+#
+#  SERVER=https://my-chef-server chef-client --config /cdrom/bundle/client.rb --token ${MY_CHEF_VALIDATION_TOKEN}
+#
+# to get the party started. Although, now that I think about it, maybe this
+# would actually work better as a post-install command.
+
 # This tag will be appended to the iso filename, to help me remember.
 tag 'chef-0.7.4'
 

@@ -1,9 +1,0 @@
-= Examples
-
-The file <tt>chef_client.rb</tt> is lifted from my first use case for Captain, bringing up a server with the chef gems installed, so that I can then run something like
-
- SERVER=https://my-chef-server chef-client --config /cdrom/bundle/client.rb --token ${MY_CHEF_VALIDATION_TOKEN}
-
-to get the party started.
-
-I figured not to run this as a post-install command, but, you know, now I'm not so sure...
