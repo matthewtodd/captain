@@ -14,7 +14,7 @@ else
   require 'shoe'
 end
 
-Shoe.tie('captain', '0.1.1', 'Builds an Ubuntu installation CD just as you like it.') do |spec|
+Shoe.tie('captain', '0.1.2', 'Builds an Ubuntu installation CD just as you like it.') do |spec|
   spec.requirements = ['mkisofs']
   spec.add_development_dependency 'cucumber'
 end
