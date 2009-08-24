@@ -56,7 +56,7 @@ See the examples[http://github.com/matthewtodd/captain/tree/master/examples] fol
 
 == Preseeding
 
-See resources/preseed.seed.erb[http://github.com/matthewtodd/captain/blob/master/resources/preseed.seed.erb]. There may be a few controversial decisions in there that could use some configuring: there's just one monolithic disk partition, no "regular" user created, and no http mirrors included in <tt>/etc/apt/sources.list</tt>.
+See resources/preseed.seed.erb[http://github.com/matthewtodd/captain/blob/master/resources/preseed.seed.erb]. There may be a couple of controversial decisions in there that could use some configuring: there's just one monolithic disk partition, and no http mirrors included in <tt>/etc/apt/sources.list</tt>.
 
 Other than the disk partitioning, I suppose most of these things could be handled post-install, though I'm glad to accept patches / suggestions adding the configuration options you need.
 

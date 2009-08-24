@@ -27,8 +27,9 @@ d-i partman/confirm boolean true
 ### Base system installation
 
 ### Account setup
-d-i passwd/root-login boolean true
-d-i passwd/make-user boolean false
+d-i passwd/root-login boolean false
+d-i passwd/make-user boolean true
+d-i user-setup/encrypt-home boolean false
 
 ### Apt setup
 d-i apt-setup/use_mirror boolean false
