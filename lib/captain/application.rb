@@ -55,6 +55,9 @@ module Captain
       Resource.template('disk_udeb_include.erb',     template_binding).copy_to(working_directory, '.disk', 'udeb_include')
     end
 
+    # FIXME adjust isolinux.cfg to provide a boot menu, defaulting to first
+    # hard disk, just in case the machine's configured to prefer booting from
+    # the CD.
     def create_boot_loader
       Resource.file('isolinux.bin').copy_to(working_directory, 'isolinux', 'isolinux.bin')
       Resource.file('isolinux.cfg').copy_to(working_directory, 'isolinux', 'isolinux.cfg')
