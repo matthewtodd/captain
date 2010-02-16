@@ -1,16 +1,14 @@
 module Captain
   class Rake
-    attr_reader :app
-
     def initialize
       @app = Application.new
-      yield app if block_given?
+      yield @app.configuration if block_given?
       define
     end
 
     def define
-      file app.send(:iso_image_path) do
-        app.run
+      file @app.iso_image_path do
+        @app.run
       end
     end
   end

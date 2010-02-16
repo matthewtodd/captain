@@ -11,6 +11,10 @@ module Captain
       super
     end
 
+    def configuration
+      __getobj__
+    end
+
     def run
       create_bundle_directory
       create_packages
