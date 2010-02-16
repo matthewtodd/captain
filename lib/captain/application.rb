@@ -1,14 +1,14 @@
+require 'delegate'
 require 'tmpdir'
 
 module Captain
-  class Application
+  class Application < DelegateClass(Configuration)
     def self.run
       new.run
     end
 
-    def initialize
-      load_default_configuration
-      load_configuration
+    def initialize(configuration=Configuration.new)
+      super
     end
 
     def run
@@ -18,16 +18,6 @@ module Captain
       create_boot_loader
       create_ubuntu_symlink
       create_iso_image
-    end
-
-    def method_missing(symbol, *args)
-      if args.length > 0
-        @configuration[symbol] = args.first
-      elsif @configuration.has_key?(symbol)
-        @configuration[symbol]
-      else
-        super
-      end
     end
 
     private
@@ -73,46 +63,8 @@ module Captain
       Image.new(working_directory).burn(iso_image_path, iso_image_name)
     end
 
-    def installer_repository_mirror_and_codename
-      repositories.first.split(' ').slice(0, 2)
-    end
-
-    def iso_image_name
-      "#{label} #{version} #{tag.capitalize}"
-    end
-
-    def iso_image_path
-      File.join(output_directory, "#{label}-#{version}-#{tag}-#{architecture}.iso".downcase)
-    end
-
     def template_binding
       binding
-    end
-
-    def load_default_configuration
-      @configuration = Hash.new
-
-      architecture          'i386'
-      include_packages      ['linux-server', 'language-support-en', 'grub']
-      install_packages      []
-      label                 'Ubuntu'
-      output_directory      '.'
-      post_install_commands []
-      repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted']
-      tasks                 ['minimal', 'standard']
-      tag                   'captain'
-      version               '9.04'
-      working_directory     temporary_directory
-    end
-
-    def load_configuration
-      instance_eval(File.read('config/captain.rb')) if File.exist?('config/captain.rb')
-    end
-
-    def temporary_directory
-      temporary_directory = Dir.mktmpdir('captain')
-      at_exit { FileUtils.remove_entry_secure(temporary_directory) }
-      temporary_directory
     end
   end
 end
