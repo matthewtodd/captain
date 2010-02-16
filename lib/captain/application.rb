@@ -37,12 +37,12 @@ module Captain
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz'  ).copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
 
-      Resource.template('preseed.seed.erb',          template_binding).copy_to(working_directory, 'install', 'preseed.seed')
-      Resource.template('disk_base_components.erb',  template_binding).copy_to(working_directory, '.disk', 'base_components')
-      Resource.template('disk_base_installable.erb', template_binding).copy_to(working_directory, '.disk', 'base_installable')
-      Resource.template('disk_cd_type.erb',          template_binding).copy_to(working_directory, '.disk', 'cd_type')
-      Resource.template('disk_info.erb',             template_binding).copy_to(working_directory, '.disk', 'info')
-      Resource.template('disk_udeb_include.erb',     template_binding).copy_to(working_directory, '.disk', 'udeb_include')
+      Resource.template('preseed.seed.erb',          binding).copy_to(working_directory, 'install', 'preseed.seed')
+      Resource.template('disk_base_components.erb',  binding).copy_to(working_directory, '.disk', 'base_components')
+      Resource.template('disk_base_installable.erb', binding).copy_to(working_directory, '.disk', 'base_installable')
+      Resource.template('disk_cd_type.erb',          binding).copy_to(working_directory, '.disk', 'cd_type')
+      Resource.template('disk_info.erb',             binding).copy_to(working_directory, '.disk', 'info')
+      Resource.template('disk_udeb_include.erb',     binding).copy_to(working_directory, '.disk', 'udeb_include')
     end
 
     # FIXME adjust isolinux.cfg to provide a boot menu, defaulting to first
@@ -61,10 +61,6 @@ module Captain
 
     def create_iso_image
       Image.new(working_directory).burn(iso_image_path, iso_image_name)
-    end
-
-    def template_binding
-      binding
     end
   end
 end
