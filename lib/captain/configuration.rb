@@ -3,8 +3,49 @@ require 'tmpdir'
 module Captain
   class Configuration
     def initialize
-      load_defaults
+      self.architecture          = 'i386'
+      self.include_packages      = ['linux-server', 'language-support-en', 'grub']
+      self.install_packages      = []
+      self.label                 = 'Ubuntu'
+      self.output_directory      = '.'
+      self.post_install_commands = []
+      self.repositories          = ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted']
+      self.tasks                 = ['minimal', 'standard']
+      self.tag                   = 'captain'
+      self.version               = '9.04'
+      self.working_directory     = temporary_directory
+
       load_file
+    end
+
+    attr_accessor :architecture
+    attr_accessor :install_packages
+    attr_accessor :label
+    attr_accessor :output_directory
+    attr_accessor :post_install_commands
+    attr_accessor :repositories
+    attr_accessor :tag
+    attr_accessor :version
+    attr_accessor :working_directory
+
+    def include_packages
+      @include_packages.dup
+    end
+
+    def include_packages=(packages)
+      @include_packages ||= []
+      @include_packages.push(*packages)
+      @include_packages.uniq!
+    end
+
+    def tasks
+      @tasks.dup
+    end
+
+    def tasks=(tasks)
+      @tasks ||= []
+      @tasks.push(*tasks)
+      @tasks.uniq!
     end
 
     def installer_repository_mirror_and_codename
@@ -19,27 +60,7 @@ module Captain
       File.join(output_directory, "#{label}-#{version}-#{tag}-#{architecture}.iso".downcase)
     end
 
-    def respond_to?(method)
-      @values.has_key?(method)
-    end
-
     private
-
-    def load_defaults
-      @values ||= {}
-
-      architecture          'i386'
-      include_packages      ['linux-server', 'language-support-en', 'grub']
-      install_packages      []
-      label                 'Ubuntu'
-      output_directory      '.'
-      post_install_commands []
-      repositories          ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted']
-      tasks                 ['minimal', 'standard']
-      tag                   'captain'
-      version               '9.04'
-      working_directory     temporary_directory
-    end
 
     def load_file(path = 'config/captain.rb')
       if File.exist?(path)
@@ -51,16 +72,6 @@ module Captain
       temporary_directory = Dir.mktmpdir('captain')
       at_exit { FileUtils.remove_entry_secure(temporary_directory) }
       temporary_directory
-    end
-
-    def method_missing(symbol, *args)
-      if args.length > 0
-        @values[symbol] = args.first
-      elsif @values.has_key?(symbol)
-        @values[symbol]
-      else
-        super
-      end
     end
   end
 end

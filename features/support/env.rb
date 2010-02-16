@@ -7,5 +7,5 @@ require 'captain'
 Before do
   root.join('tmp').rmtree if root.join('tmp').directory?
   @app = Captain::Application.new
-  @app.output_directory('tmp')
+  @app.output_directory = 'tmp'
 end

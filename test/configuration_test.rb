@@ -50,4 +50,96 @@ class ConfigurationTest < Test::Unit::TestCase
   should 'have default working directory' do
     assert_match /^#{Regexp.escape(ENV['TMPDIR'])}/, subject.working_directory
   end
+
+  should 'accept new architecture' do
+    subject.architecture = 'amd64'
+    assert_equal 'amd64', subject.architecture
+  end
+
+  should 'accept new include packages' do
+    subject.include_packages += ['some-additional-package']
+    assert subject.include_packages.include?('some-additional-package')
+  end
+
+  should 'ensure linux-server is in include packages' do
+    subject.include_packages = ['some-package']
+    assert subject.include_packages.include?('linux-server')
+  end
+
+  should 'ensure language-support-en is in include packages' do
+    subject.include_packages = ['some-package']
+    assert subject.include_packages.include?('language-support-en')
+  end
+
+  should 'ensure grub is in include packages' do
+    subject.include_packages = ['some-package']
+    assert subject.include_packages.include?('grub')
+  end
+
+  should 'prohibit clearing include packages' do
+    subject.include_packages = ['some-package']
+    subject.include_packages.clear
+    assert subject.include_packages.include?('some-package')
+  end
+
+  should 'accept new install packages' do
+    subject.install_packages = ['some-package']
+    assert subject.install_packages.include?('some-package')
+  end
+
+  should 'accept new label' do
+    subject.label = 'New Label'
+    assert_equal 'New Label', subject.label
+  end
+
+  should 'accept new output directory' do
+    subject.output_directory = 'path/to/output'
+    assert_equal 'path/to/output', subject.output_directory
+  end
+
+  should 'accept new post install commands' do
+    subject.post_install_commands = ['do this']
+    assert subject.post_install_commands.include?('do this')
+  end
+
+  should 'accept new repositories' do
+    subject.repositories = ['http://example.com zippy main']
+    assert_equal ['http://example.com zippy main'], subject.repositories
+  end
+
+  should 'accept new tasks' do
+    subject.tasks += ['some-task']
+    assert subject.tasks.include?('some-task')
+  end
+
+  should 'ensure minimal is in tasks' do
+    subject.tasks = ['some-task']
+    assert subject.tasks.include?('minimal')
+  end
+
+  should 'ensure standard is in tasks' do
+    subject.tasks = ['some-task']
+    assert subject.tasks.include?('standard')
+  end
+
+  should 'prohibit clearing tasks' do
+    subject.tasks = ['some-task']
+    subject.tasks.clear
+    assert subject.tasks.include?('some-task')
+  end
+
+  should 'accept new tag' do
+    subject.tag = 'chef-0.7.16'
+    assert_equal 'chef-0.7.16', subject.tag
+  end
+
+  should 'accept new version' do
+    subject.version = '1.10'
+    assert_equal '1.10', subject.version
+  end
+
+  should 'accept new working directory' do
+    subject.working_directory = 'path/to/working'
+    assert_equal 'path/to/working', subject.working_directory
+  end
 end
