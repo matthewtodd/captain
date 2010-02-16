@@ -14,8 +14,8 @@ module Helpers
   end
 
   def create_an_empty_hard_disk_image(path)
-    append_to_path('/Applications/Q.app/Contents/MacOS')
-    system("qemu-img create -f vmdk #{path} 2G > /dev/null") || raise('Could not create image.')
+    append_to_path('/Library/Application Support/VMware Fusion')
+    system("vmware-vdiskmanager -c -s 2GB -a lsilogic -t 0 #{path}") || raise('Could not create image.')
   end
 
   def launch_vmware(config_path)
@@ -29,10 +29,11 @@ World(Helpers)
 __END__
 config.version = "8"
 virtualHW.version = "7"
-scsi0.present = "FALSE"
+scsi0.present = "TRUE"
+scsi0.virtualDev = "lsilogic"
 memsize = "512"
-ide0:0.present = "TRUE"
-ide0:0.fileName = "<%= hard_disk_path %>"
+scsi0:0.present = "TRUE"
+scsi0:0.fileName = "<%= hard_disk_path %>"
 ide1:0.present = "TRUE"
 ide1:0.fileName = "<%= cdrom_iso_path %>"
 ide1:0.deviceType = "cdrom-image"
