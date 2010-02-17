@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ConfigurationTest < Test::Unit::TestCase
   subject do
-    Configuration.new
+    Captain::Configuration.new
   end
 
   should 'have default architecture' do
