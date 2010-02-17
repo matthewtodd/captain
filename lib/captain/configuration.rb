@@ -57,7 +57,10 @@ module Captain
     end
 
     def iso_image_path
-      File.join(output_directory, "#{label}-#{version}-#{tag}-#{architecture}.iso".downcase)
+      iso_image_basename = "#{label}-#{version}-#{tag}-#{architecture}.iso".downcase
+
+      Pathname.new(output_directory).
+              join(iso_image_basename).cleanpath.to_s
     end
 
     private

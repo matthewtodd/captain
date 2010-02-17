@@ -148,4 +148,16 @@ class ConfigurationTest < Test::Unit::TestCase
     assert_equal ['http://example.com', 'zippy'],
                  subject.installer_repository_mirror_and_codename
   end
+
+  should 'generate iso image path, in canonical form' do
+    subject.output_directory = 'subdirectory/../output'
+
+    subject.label        = 'LABEL'
+    subject.version      = 'VERSION'
+    subject.tag          = 'TAG'
+    subject.architecture = 'ARCHITECTURE'
+
+    assert_equal 'output/label-version-tag-architecture.iso',
+                 subject.iso_image_path
+  end
 end
