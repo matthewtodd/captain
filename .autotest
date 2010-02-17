@@ -18,31 +18,3 @@ Autotest.add_hook(:initialize) do |autotest|
     autotest.files_matching %r{^test/.*_test.rb$}
   end
 end
-
-Autotest.add_hook(:run_command) do
-  ENV['AUTOTEST'] = 'true'
-  $stdout.write "\e[2J\e[H" # 2J: clear the screen. H: cursor to 1,1
-end
-
-# I may be picky, but the below makes autotest's default test command lean a
-# little more heavily on the environment that invoked it. It also makes for
-# less noisy output, without silencing entirely.
-class Autotest
-  def make_test_cmd(files_to_test)
-    cmds = []
-    full, partial = reorder(files_to_test).partition { |k,v| v.empty? }
-    base_cmd = "ruby -Itest"
-
-    unless full.empty? then
-      classes = full.map {|k,v| k}.flatten.uniq.map { |file| file.gsub(/^test\//, '').gsub(/.rb$/, '') }
-      cmds << "#{base_cmd} -e \"%w(#{classes.join(' ')}).each { |f| require f }\" | unit_diff"
-    end
-
-    partial.each do |klass, methods|
-      regexp = Regexp.union(*methods).source
-      cmds << "#{base_cmd} #{klass} -n \"/^(#{regexp})$/\" | unit_diff"
-    end
-
-    return cmds.join("#{SEP} ")
-  end
-end
