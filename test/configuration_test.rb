@@ -142,4 +142,10 @@ class ConfigurationTest < Test::Unit::TestCase
     subject.working_directory = 'path/to/working'
     assert_equal 'path/to/working', subject.working_directory
   end
+
+  should 'generate installer repository mirror and codename' do
+    subject.repositories = ['http://example.com zippy main restricted']
+    assert_equal ['http://example.com', 'zippy'],
+                 subject.installer_repository_mirror_and_codename
+  end
 end
