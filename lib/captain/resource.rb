@@ -3,7 +3,7 @@ require 'pathname'
 
 module Captain
   class Resource
-    PATH = Pathname.new(File.dirname(__FILE__)).join('..', '..', 'resources')
+    PATH = Pathname.new(__FILE__).parent.join('resources')
 
     def self.file(name)
       new(name)
