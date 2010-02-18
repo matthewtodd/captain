@@ -10,6 +10,8 @@ module Captain
       file @app.iso_image_path do
         @app.run
       end
+
+      task :captain => @app.iso_image_path
     end
   end
 end
