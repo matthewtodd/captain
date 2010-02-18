@@ -1,5 +1,5 @@
 Given /^the following (.+):$/ do |path, contents|
-  shell.create_file(path, bundler.munge_gemfile_for('captain', contents))
+  shell.create_file(path, bundler.add_path_for('captain', Dir.pwd).munge_gemfile(contents))
 end
 
 When /^I run "(.+)" inside the bundle$/ do |command|
@@ -7,5 +7,5 @@ When /^I run "(.+)" inside the bundle$/ do |command|
 end
 
 Then /^I should be able to launch the resulting image "(.+)"$/ do |image_path|
-  vmware.launch(image_path, shell)
+  vmware.launch(image_path)
 end

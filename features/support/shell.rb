@@ -1,27 +1,51 @@
+require 'pathname'
+require 'tmpdir'
+
 class ShellHelper
   attr_reader :cwd
 
-  def initialize(cwd)
-    @cwd = cwd
+  def initialize(basename)
+    @cwd = Pathname.new(Dir.tmpdir).join(basename)
+
+    if @cwd.exist?
+      FileUtils.remove_entry_secure(@cwd)
+    end
+
+    @cwd.mkpath
   end
 
   def create_file(path, contents)
-    full = cwd.join(path)
-    full.parent.mkpath
-    full.open('w') do |stream|
-      stream.write(contents)
+    chdir do
+      path = Pathname.new(path)
+      path.parent.mkpath
+      path.open('w') do |stream|
+        stream.write(contents)
+      end
     end
   end
 
   def run(command, environment={})
-    Dir.chdir(cwd) do
+    chdir do
       overriding_environment(environment) do
         system(command)
       end
     end
   end
 
+  def wait(message=nil, &block)
+    puts "Waiting. #{message}"
+
+    chdir do
+      sleep(1) until block.call
+    end
+  end
+
+
   private
+
+  def chdir(&block)
+    Dir.chdir(cwd, &block)
+  end
 
   def overriding_environment(overrides)
     original = {}
@@ -38,14 +62,4 @@ class ShellHelper
       ENV[key] = value
     end
   end
-end
-
-module ShellWorld
-  attr_accessor :shell
-end
-
-World(ShellWorld)
-
-Before do
-  self.shell = ShellHelper.new(directory.temp)
 end
