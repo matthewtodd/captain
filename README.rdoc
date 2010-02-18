@@ -8,9 +8,15 @@ OSX).
 
 == Behold
 
-With no external configuration, Captain builds an i386 Jaunty CD:
+With the following +Rakefile+:
 
- $ captain
+ require 'captain'
+
+ Captain::Rake.new
+
+Captain builds an i386 Jaunty CD:
+
+ $ rake captain
  ...
  $ ls
  ubuntu-9.04-captain-i386.iso
@@ -22,18 +28,38 @@ Captain uses <tt>mkisofs</tt> to burn the final image.
 
 On OSX, you can get this with
 
-  port install cdrtools
+ $ brew install dvdrtools
+
+or
+
+ $ port install dvdrtools
 
 And then you're good to go:
 
-  gem sources --add http://gems.github.com
-  gem install matthewtodd-captain
+ $ gem install captain
 
 == Configure
 
-Captain looks for <tt>config/captain.rb</tt> under the current directory.
+An instance of Captain::Configuration is yielded to the rake task definition:
 
-See Captain::Configuration.new for the default configuration values.
+ Captain::Rake.new do |task|
+   task.architecture = 'amd64'
+
+   task.repositories = [
+     'http://us.archive.ubuntu.com/ubuntu karmic main universe',
+     'http://apt.opscode.com/ubuntu karmic universe'
+   ]
+
+   task.include_packages = [
+     'chef',
+     'git-core',
+     'ruby-full'
+   ]
+
+   task.install_packages = [
+     'openssh-server'
+   ]
+ end
 
 There are a couple of things you'll need to be careful with, for now:
 
