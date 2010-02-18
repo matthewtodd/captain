@@ -14,8 +14,6 @@ module Captain
       self.tag                   = 'captain'
       self.version               = '9.04'
       self.working_directory     = temporary_directory
-
-      load_file
     end
 
     attr_accessor :architecture
@@ -64,12 +62,6 @@ module Captain
     end
 
     private
-
-    def load_file(path = 'config/captain.rb')
-      if File.exist?(path)
-        instance_eval File.read(path)
-      end
-    end
 
     def temporary_directory
       temporary_directory = Dir.mktmpdir('captain')

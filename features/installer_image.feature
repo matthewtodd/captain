@@ -3,7 +3,7 @@ Feature: Installer Image
   As a perennial yak-shaver
   I want to assemble my own installer CD
 
-  Background:
+  Scenario: Running from rake
     Given the following Gemfile:
       """
       source :gemcutter
@@ -11,12 +11,7 @@ Feature: Installer Image
       gem 'rake'
       """
 
-  Scenario: Running from the command line (deprecated!)
-     When I run "captain" inside the bundle
-     Then I should be able to launch the resulting image "ubuntu-9.04-captain-i386.iso"
-
-  Scenario: Running from rake
-    Given the following Rakefile:
+    And the following Rakefile:
       """
       require 'captain'
 
