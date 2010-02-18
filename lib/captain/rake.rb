@@ -1,17 +1,28 @@
 module Captain
   class Rake
-    def initialize
-      @app = Application.new
-      yield @app.configuration if block_given?
+    attr_reader :application
+    attr_reader :config
+    attr_reader :name
+    attr_reader :description
+
+    def initialize(name='captain', description='Build the iso image')
+      @application = Application.new
+      @config      = @application.configuration
+      @name        = name
+      @description = description
+
+      yield config if block_given?
+
       define
     end
 
     def define
-      file @app.iso_image_path do
-        @app.run
+      file config.iso_image_path do
+        application.run
       end
 
-      task :captain => @app.iso_image_path
+      desc description
+      task name => config.iso_image_path
     end
   end
 end

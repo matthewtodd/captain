@@ -15,25 +15,32 @@ class RakeTest < Test::Unit::TestCase
   end
 
   should 'define a file task' do
-    subject.new do |task|
-      task.label        = 'a'
-      task.version      = 'b'
-      task.tag          = 'c'
-      task.architecture = 'd'
-    end
+    task = subject.new
 
-    rake.should_have_task('a-b-c-d.iso').of_type(Rake::FileTask)
+    rake.should_have_task(task.config.iso_image_path).
+                  of_type(Rake::FileTask)
   end
 
   should 'define a captain task that depends on the file' do
-    subject.new do |task|
-      task.label        = 'a'
-      task.version      = 'b'
-      task.tag          = 'c'
-      task.architecture = 'd'
-    end
+    task = subject.new
 
-    rake.should_have_task('captain').depending_on('a-b-c-d.iso')
+    rake.should_have_task('captain').
+             depending_on(task.config.iso_image_path).
+         with_description('Build the iso image')
+  end
+
+  should 'accept a custom name for the captain task' do
+    task = subject.new('CUSTOM NAME')
+
+    rake.should_not_have_task('captain')
+    rake.should_have_task('CUSTOM NAME')
+  end
+
+  should 'accept a custom description for the captain task' do
+    task = subject.new('captain', 'CUSTOM DESCRIPTION')
+
+    rake.should_have_task('captain').
+         with_description('CUSTOM DESCRIPTION')
   end
 
 
@@ -48,6 +55,10 @@ class RakeTest < Test::Unit::TestCase
       task.extend(TaskAssertions)
       task.test = test
       task
+    end
+
+    def should_not_have_task(name)
+      test.assert_nil lookup(name)
     end
   end
 
