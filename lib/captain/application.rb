@@ -3,14 +3,6 @@ require 'tmpdir'
 
 module Captain
   class Application < DelegateClass(Configuration)
-    def self.run
-      new.run
-    end
-
-    def initialize(configuration=Configuration.new)
-      super
-    end
-
     def configuration
       __getobj__
     end

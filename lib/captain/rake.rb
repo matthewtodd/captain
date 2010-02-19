@@ -1,13 +1,11 @@
 module Captain
   class Rake
-    attr_reader :application
     attr_reader :config
     attr_reader :name
     attr_reader :description
 
     def initialize(name='captain', description='Build the iso image')
-      @application = Application.new
-      @config      = @application.configuration
+      @config      = Configuration.new
       @name        = name
       @description = description
 
@@ -18,7 +16,7 @@ module Captain
 
     def define
       file config.iso_image_path do
-        application.run
+        Application.new(config).run
       end
 
       desc description
