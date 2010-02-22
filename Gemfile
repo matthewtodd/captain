@@ -1,4 +1,4 @@
-source :gemcutter
+source :rubygems
 
 gem 'captain', :path => File.expand_path('..', __FILE__)
 
