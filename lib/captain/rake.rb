@@ -26,7 +26,10 @@ module Captain
     private
 
     def prerequisites
-      ::Rake::FileList[::Rake.application.rakefile, "#{config.bundle_directory}/**/*"]
+      ::Rake::FileList[
+        ::Rake.application.rakefile,
+        "#{config.bundle_directory}/**/*"
+      ]
     end
   end
 end
