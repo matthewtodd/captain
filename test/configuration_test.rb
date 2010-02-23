@@ -9,6 +9,10 @@ class ConfigurationTest < Test::Unit::TestCase
     assert_equal 'i386', subject.architecture
   end
 
+  should 'have default bundle_directory' do
+    assert_equal 'bundle', subject.bundle_directory
+  end
+
   should 'have default include packages' do
     assert_equal ['linux-server', 'language-support-en', 'grub'],
                  subject.include_packages
@@ -54,6 +58,11 @@ class ConfigurationTest < Test::Unit::TestCase
   should 'accept new architecture' do
     subject.architecture = 'amd64'
     assert_equal 'amd64', subject.architecture
+  end
+
+  should 'accept new bundle_directory' do
+    subject.bundle_directory = 'vendor'
+    assert_equal 'vendor', subject.bundle_directory
   end
 
   should 'accept new include packages' do

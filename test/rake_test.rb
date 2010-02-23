@@ -18,7 +18,17 @@ class RakeTest < Test::Unit::TestCase
     task = subject.new
 
     rake.should_have_task(task.config.iso_image_path).
-                  of_type(Rake::FileTask)
+                  of_type(Rake::FileTask).
+             depending_on(rake.rakefile)
+  end
+
+  should 'have the file task depend on the files that will be bundled on the disk' do
+    task = subject.new do |config|
+      config.bundle_directory = 'lib'
+    end
+
+    rake.should_have_task(task.config.iso_image_path).
+             depending_on(rake.rakefile, *Dir.glob('lib/**/*'))
   end
 
   should 'define a captain task that depends on the file' do
@@ -44,8 +54,15 @@ class RakeTest < Test::Unit::TestCase
   end
 
 
+  private
+
   module RakeAssertions
     attr_accessor :test
+
+    # rakefile won't have been set, since we're not actually invoking rake.
+    def rakefile
+      'Rakefile'
+    end
 
     def should_have_task(name)
       task = lookup(name)
@@ -70,8 +87,8 @@ class RakeTest < Test::Unit::TestCase
       self
     end
 
-    def depending_on(name)
-      test.assert_equal [name], prerequisites
+    def depending_on(*tasks)
+      test.assert_equal tasks, prerequisites
       self
     end
 

@@ -15,12 +15,18 @@ module Captain
     end
 
     def define
-      file config.iso_image_path do
+      file config.iso_image_path => prerequisites do
         Application.new(config).run
       end
 
       desc description
       task name => config.iso_image_path
+    end
+
+    private
+
+    def prerequisites
+      ::Rake::FileList[::Rake.application.rakefile, "#{config.bundle_directory}/**/*"]
     end
   end
 end

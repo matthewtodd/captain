@@ -4,6 +4,7 @@ module Captain
   class Configuration
     def initialize
       self.architecture          = 'i386'
+      self.bundle_directory      = 'bundle'
       self.include_packages      = ['linux-server', 'language-support-en', 'grub']
       self.install_packages      = []
       self.label                 = 'Ubuntu'
@@ -17,6 +18,7 @@ module Captain
     end
 
     attr_accessor :architecture
+    attr_accessor :bundle_directory
     attr_accessor :install_packages
     attr_accessor :label
     attr_accessor :output_directory
