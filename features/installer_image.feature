@@ -6,7 +6,7 @@ Feature: Installer Image
   Scenario: Running from rake
     Given the following Gemfile:
       """
-      source :gemcutter
+      source :rubygems
       gem 'captain'
       gem 'rake'
       """
