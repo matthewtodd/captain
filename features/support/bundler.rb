@@ -1,3 +1,5 @@
+require 'shellwords'
+
 class BundlerHelper
   def initialize
     @local_paths = {}
@@ -17,6 +19,6 @@ class BundlerHelper
   end
 
   def exec(command)
-    "env -i HOME=#{ENV['HOME']} PATH=#{ENV['PATH']} bundle exec #{command}"
+    "env -i HOME=#{Shellwords.escape(ENV['HOME'])} PATH=#{Shellwords.escape(ENV['PATH'])} bundle exec #{command}"
   end
 end

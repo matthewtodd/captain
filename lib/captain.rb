@@ -10,4 +10,5 @@ module Captain
   autoload :Release,       'captain/release'
   autoload :Remote,        'captain/remote'
   autoload :Resource,      'captain/resource'
+  autoload :VM,            'captain/vm'
 end

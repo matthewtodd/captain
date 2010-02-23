@@ -12,5 +12,5 @@ When /^I create a VMware virtual machine at "([^\"]*)" using "([^\"]*)"$/ do |pa
 end
 
 Then /^I should be able to open "([^\"]*)"$/ do |path|
-  vmware.open(path)
+  shell.open(path)
 end

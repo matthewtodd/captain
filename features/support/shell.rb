@@ -24,33 +24,18 @@ class ShellHelper
     end
   end
 
-  def run(command, environment={})
-    chdir do
-      overriding_environment(environment) do
-        system(command)
-      end
-    end
-  end
-
-  private
-
   def chdir(&block)
     Dir.chdir(cwd, &block)
   end
 
-  def overriding_environment(overrides)
-    original = {}
+  def open(path)
+    puts "Opening #{path}. Cucumber will resume once the application quits."
+    run 'open', '-W', '-n', path
+  end
 
-    overrides.each do |key, value|
-      key = key.to_s.upcase
-      original[key] = ENV.delete(key)
-      ENV[key]      = value
-    end
-
-    yield
-  ensure
-    original.each do |key, value|
-      ENV[key] = value
+  def run(*args)
+    chdir do
+      system(*args)
     end
   end
 end
