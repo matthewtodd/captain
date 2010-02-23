@@ -12,7 +12,7 @@ With the following +Rakefile+:
 
  require 'captain'
 
- Captain::Rake.new
+ Captain::Rake::IsoTask.new
 
 Captain builds an i386 Jaunty CD:
 
@@ -42,7 +42,7 @@ And then you're good to go:
 
 An instance of Captain::Configuration is yielded to the rake task definition:
 
- Captain::Rake.new do |task|
+ Captain::Rake::IsoTask.new do |task|
    task.architecture = 'amd64'
 
    task.repositories = [
