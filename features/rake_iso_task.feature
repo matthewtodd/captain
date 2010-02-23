@@ -27,4 +27,5 @@ Feature: Rake ISO Task
       end
       """
     When I run "rake captain" inside the bundle
-    Then I should be able to launch the resulting image "ubuntu-9.04-captain-i386.iso"
+    And I create a VMware virtual machine at "vm.vmwarevm" using "ubuntu-9.04-captain-i386.iso"
+    Then I should be able to open "vm.vmwarevm"

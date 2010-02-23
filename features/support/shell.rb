@@ -32,15 +32,6 @@ class ShellHelper
     end
   end
 
-  def wait(message=nil, &block)
-    puts "Waiting. #{message}"
-
-    chdir do
-      sleep(1) until block.call
-    end
-  end
-
-
   private
 
   def chdir(&block)
