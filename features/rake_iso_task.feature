@@ -1,4 +1,4 @@
-Feature: Installer Image
+Feature: Rake ISO Task
   In order to install a custom Ubuntu system
   As a perennial yak-shaver
   I want to assemble my own installer CD
