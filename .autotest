@@ -4,7 +4,7 @@ Autotest.add_hook(:initialize) do |autotest|
   autotest.clear_mappings
 
   # lib -> test
-  autotest.add_mapping %r{^lib/.*?(\w+).rb$} do |path, match|
+  autotest.add_mapping %r{^lib/captain/(.*?).rb$} do |path, match|
     autotest.files_matching %r{^test/#{match[1]}_test.rb$}
   end
 

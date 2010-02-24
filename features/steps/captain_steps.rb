@@ -7,8 +7,8 @@ When /^I run "(.+)" inside the bundle$/ do |command|
   shell.run(bundler.exec(command))
 end
 
-When /^I create a VMware virtual machine at "([^\"]*)" using "([^\"]*)"$/ do |path, image_path|
-  vmware.create(path, image_path)
+When /^I create a VMware virtual machine named "([^\"]*)" using "([^\"]*)"$/ do |name, iso_image|
+  vmware.create(name, iso_image)
 end
 
 Then /^I should be able to open "([^\"]*)"$/ do |path|

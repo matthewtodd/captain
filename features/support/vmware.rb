@@ -7,9 +7,12 @@ class VMwareHelper
     @shell = shell
   end
 
-  def create(path, cdrom_image_path)
+  def create(name, iso_image)
     shell.chdir do
-      Captain::VM::VMware.new(path, cdrom_image_path).create
+      vm = Captain::VM::VMware.new
+      vm.name      = name
+      vm.iso_image = iso_image
+      vm.create
     end
   end
 end

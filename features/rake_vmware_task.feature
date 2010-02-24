@@ -3,7 +3,6 @@ Feature: Rake VMware Task
   As a perennial yak-shaver
   I want some help booting it up in VMware
 
-  @wip
   Scenario: Running from rake
     Given the following Gemfile:
       """
@@ -18,7 +17,7 @@ Feature: Rake VMware Task
       iso_task = Captain::Rake::IsoTask.new
 
       Captain::Rake::VMwareTask.new do |task|
-        task.cdrom_image = iso_task.config.iso_image_path
+        task.iso_image = iso_task.config.iso_image_path
       end
       """
     When I run "rake vmware" inside the bundle
