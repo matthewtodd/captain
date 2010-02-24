@@ -1,6 +1,7 @@
 = Captain
 
-Captain builds an Ubuntu installation CD just as you like it.
+Captain provides a rake task to build an Ubuntu installation CD just as you
+like it.
 
 It gathers packages from any number of repositories, preseeds almost all of the
 installer questions, and runs on any platform with <tt>mkisofs</tt> (including
@@ -11,8 +12,7 @@ OSX).
 With the following +Rakefile+:
 
  require 'captain'
-
- Captain::Rake::IsoTask.new
+ Captain::Rake::ISOTask.new
 
 Captain builds an i386 Jaunty CD:
 
@@ -42,7 +42,7 @@ And then you're good to go:
 
 An instance of Captain::Configuration is yielded to the rake task definition:
 
- Captain::Rake::IsoTask.new do |task|
+ Captain::Rake::ISOTask.new do |task|
    task.architecture = 'amd64'
 
    task.repositories = [
@@ -91,3 +91,26 @@ the configuration options you need.
 
 Captain caches everything it downloads from the network in
 <tt>$HOME/.captain</tt>.
+
+== VMware
+
+A second rake task, Captain::Rake::VMwareTask, is provided to help you play
+around with your ISO image:
+
+ require 'captain'
+
+ iso_task = Captain::Rake::ISOTask.new do |task|
+   # your configuration here...
+ end
+
+ Captain::Rake::VMwareTask.new do |task|
+   task.iso_image = iso_task.config.iso_image_path
+ end
+
+This will give you <tt>rake vmware</tt>, which will create <tt>vm.vmware</tt>
+in the current directory. You can then <tt>open vm.vmwarevm</tt> to launch the
+virtual machine.
+
+*Note* this rake task assumes <tt>vmware-vdiskmanager</tt> is on your
+<tt>PATH</tt>. On OSX with VMware Fusion, the proper directory is
+<tt>/Library/Application Support/VMware Fusion</tt>.

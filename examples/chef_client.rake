@@ -4,11 +4,10 @@
 #  SERVER=https://my-chef-server chef-client --config /cdrom/bundle/client.rb --token ${MY_CHEF_VALIDATION_TOKEN}
 #
 # to get the party started. (Although, now that I think about it, maybe that
-# would be more appropriately as a post-install command.) I'm eagerly awaiting
-# the Ubuntu packages for chef!
+# would be more appropriately as a post-install command.)
 require 'captain'
 
-Captain::Rake.new do |task|
+Captain::Rake::ISOTask.new do |task|
   # This tag will be appended to the iso filename, to help me remember.
   task.tag = 'chef-0.7.4'
 
