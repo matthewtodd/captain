@@ -18,7 +18,9 @@ d-i clock-setup/ntp boolean false
 
 ### Partitioning
 d-i partman-auto/init_automatically_partition select biggest_free
-d-i partman-auto/method string regular
+d-i partman-auto/method string lvm
+d-i partman-auto/purge_lvm_from_device boolean true
+d-i partman-lvm/confirm boolean true
 d-i partman-auto/choose_recipe select atomic
 d-i partman/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
