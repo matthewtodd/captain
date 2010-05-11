@@ -1,11 +1,9 @@
-World(Module.new do
-  attr_accessor :bundler
+module Accessors
   attr_accessor :shell
-  attr_accessor :vmware
-end)
+end
+
+World(Accessors)
 
 Before do
-  self.bundler = BundlerHelper.new
-  self.shell   = ShellHelper.new('captain-cucumber')
-  self.vmware  = VMwareHelper.new(shell)
+  self.shell = ShellHelper.new
 end

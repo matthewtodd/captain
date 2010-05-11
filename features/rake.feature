@@ -3,16 +3,8 @@ Feature: Rake ISO Task
   As a perennial yak-shaver
   I want to assemble my own installer CD
 
-  @wip
-  Scenario: Running from rake
-    Given the following Gemfile:
-      """
-      source :rubygems
-      gem 'captain'
-      gem 'rake'
-      """
-
-    And the following Rakefile:
+  Background:
+    Given the following Rakefile:
       """
       require 'captain'
 
@@ -25,8 +17,13 @@ Feature: Rake ISO Task
         task.repositories = [
           'http://us.archive.ubuntu.com/ubuntu jaunty main restricted'
         ]
+
+        Captain::Rake::VMware.new do |vm|
+          vm.iso_image = task.iso_image_path
+        end
       end
       """
-    When I run "rake captain" inside the bundle
-    And I create a VMware virtual machine at "vm.vmwarevm" using "ubuntu-9.04-captain-i386.iso"
+
+  Scenario: Running from rake
+    When I run "rake vmware"
     Then I should be able to open "vm.vmwarevm"

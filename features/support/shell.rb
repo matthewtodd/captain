@@ -2,16 +2,10 @@ require 'pathname'
 require 'tmpdir'
 
 class ShellHelper
-  attr_reader :cwd
+  ROOT = Pathname.new('../../..').expand_path(__FILE__)
 
-  def initialize(basename)
-    @cwd = Pathname.new(Dir.tmpdir).join(basename)
-
-    if @cwd.exist?
-      FileUtils.remove_entry_secure(@cwd)
-    end
-
-    @cwd.mkpath
+  def initialize
+    @cwd = Dir.mktmpdir
   end
 
   def create_file(path, contents)
@@ -25,17 +19,25 @@ class ShellHelper
   end
 
   def chdir(&block)
-    Dir.chdir(cwd, &block)
+    Dir.chdir(@cwd, &block)
   end
 
   def open(path)
     puts "Opening #{path}. Cucumber will resume once the application quits."
-    run 'open', '-W', '-n', path
+    run "open -W -n #{path}"
   end
 
-  def run(*args)
-    chdir do
-      system(*args) || raise('Command failed!')
-    end
+  def run(command)
+    chdir { system with_rubylib(command) }
+  end
+
+  private
+
+  def system(*args)
+    super || raise('Command failed!')
+  end
+
+  def with_rubylib(command)
+    "/usr/bin/env RUBYLIB=#{ROOT.join('lib')} #{command}"
   end
 end
