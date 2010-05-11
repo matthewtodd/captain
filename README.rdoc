@@ -72,8 +72,7 @@ There are a couple of things you'll need to be careful with, for now:
                  <tt>Release</tt> file in the first repository. But it isn't
                  yet, so beware of the duplication.
 
-See the {examples}[http://github.com/matthewtodd/captain/tree/master/examples]
-folder for more.
+See {hcts/bootstrap}[http://github.com/hcts/bootstrap] for an example project.
 
 == Preseeding
 
