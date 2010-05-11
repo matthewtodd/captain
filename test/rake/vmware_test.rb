@@ -1,7 +1,7 @@
 require 'test/test_helper'
 require 'rake'
 
-class VMwareTaskTest < Test::Unit::TestCase
+class VMwareTest < Test::Unit::TestCase
   attr_reader :rake
 
   def setup
@@ -10,7 +10,7 @@ class VMwareTaskTest < Test::Unit::TestCase
   end
 
   subject do
-    Captain::Rake::VMwareTask
+    Captain::Rake::VMware
   end
 
   should 'define a file task' do

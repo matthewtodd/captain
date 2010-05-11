@@ -1,6 +1,6 @@
 module Captain
   module Rake
-    autoload :ISOTask,    'captain/rake/iso_task'
-    autoload :VMwareTask, 'captain/rake/vmware_task'
+    autoload :ISO,    'captain/rake/iso'
+    autoload :VMware, 'captain/rake/vmware'
   end
 end

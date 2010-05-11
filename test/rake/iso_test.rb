@@ -1,7 +1,7 @@
 require 'test/test_helper'
 require 'rake'
 
-class ISOTaskTest < Test::Unit::TestCase
+class ISOTest < Test::Unit::TestCase
   attr_reader :rake
 
   def setup
@@ -11,7 +11,7 @@ class ISOTaskTest < Test::Unit::TestCase
 
 
   subject do
-    Captain::Rake::ISOTask
+    Captain::Rake::ISO
   end
 
   should 'define a file task' do

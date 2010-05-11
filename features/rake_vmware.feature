@@ -15,9 +15,9 @@ Feature: Rake VMware Task
       """
       require 'captain'
 
-      iso_task = Captain::Rake::IsoTask.new
+      iso_task = Captain::Rake::ISO.new
 
-      Captain::Rake::VMwareTask.new do |task|
+      Captain::Rake::VMware.new do |task|
         task.iso_image = iso_task.config.iso_image_path
       end
       """

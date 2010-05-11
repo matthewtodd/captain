@@ -1,6 +1,6 @@
 module Captain
   module Rake
-    class VMwareTask
+    class VMware
       attr_reader :virtual_machine
       attr_reader :name
       attr_reader :description

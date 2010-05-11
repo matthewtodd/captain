@@ -1,6 +1,6 @@
 module Captain
   module Rake
-    class ISOTask
+    class ISO
       attr_reader :config
       attr_reader :name
       attr_reader :description

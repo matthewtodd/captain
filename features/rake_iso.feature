@@ -16,7 +16,7 @@ Feature: Rake ISO Task
       """
       require 'captain'
 
-      Captain::Rake::IsoTask.new do |task|
+      Captain::Rake::ISO.new do |task|
         task.label        = 'Ubuntu'
         task.version      = '9.04'
         task.tag          = 'captain'

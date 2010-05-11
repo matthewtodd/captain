@@ -12,7 +12,7 @@ OSX).
 With the following +Rakefile+:
 
  require 'captain'
- Captain::Rake::ISOTask.new
+ Captain::Rake::ISO.new
 
 Captain builds an i386 Jaunty CD:
 
@@ -42,7 +42,7 @@ And then you're good to go:
 
 An instance of Captain::Configuration is yielded to the rake task definition:
 
- Captain::Rake::ISOTask.new do |task|
+ Captain::Rake::ISO.new do |task|
    task.architecture = 'amd64'
 
    task.repositories = [
@@ -94,16 +94,16 @@ Captain caches everything it downloads from the network in
 
 == VMware
 
-A second rake task, Captain::Rake::VMwareTask, is provided to help you play
+A second rake task, Captain::Rake::VMware, is provided to help you play
 around with your ISO image:
 
  require 'captain'
 
- iso_task = Captain::Rake::ISOTask.new do |task|
+ iso_task = Captain::Rake::ISO.new do |task|
    # your configuration here...
  end
 
- Captain::Rake::VMwareTask.new do |task|
+ Captain::Rake::VMware.new do |task|
    task.iso_image = iso_task.config.iso_image_path
  end
 
