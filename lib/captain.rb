@@ -1,3 +1,5 @@
+require 'pathname'
+
 module Captain
   VERSION = '0.2.0'
 
@@ -11,4 +13,15 @@ module Captain
   autoload :Remote,        'captain/remote'
   autoload :Resource,      'captain/resource'
   autoload :VM,            'captain/vm'
+
+  def self.datadir
+    @@datadir ||= begin
+      datadir = RbConfig.datadir('captain')
+      if !File.exist?(datadir)
+        warn "WARN: #{datadir} does not exist.\n  Trying again with relative data directory..."
+        datadir = File.expand_path('../../data/captain', __FILE__)
+      end
+      Pathname.new(datadir)
+    end
+  end
 end

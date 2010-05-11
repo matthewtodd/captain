@@ -1,5 +1,4 @@
 require 'digest'
-require 'pathname'
 require 'zlib'
 
 module Captain

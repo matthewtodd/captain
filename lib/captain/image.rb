@@ -1,5 +1,3 @@
-require 'pathname'
-
 module Captain
   class Image
     def initialize(base_directory)

@@ -1,6 +1,5 @@
 require 'digest'
 require 'open-uri'
-require 'pathname'
 require 'uri'
 require 'zlib'
 

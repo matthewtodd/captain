@@ -1,10 +1,7 @@
 require 'erb'
-require 'pathname'
 
 module Captain
   class Resource
-    PATH = Pathname.new(__FILE__).parent.join('resources')
-
     def self.file(name)
       new(name)
     end
@@ -18,7 +15,7 @@ module Captain
     end
 
     def contents
-      PATH.join(@name).read
+      Captain.datadir.join(@name).read
     end
 
     def copy_to(*paths)
