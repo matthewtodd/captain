@@ -2,7 +2,7 @@ require 'captain'
 require 'test/unit'
 require 'shoulda/test_unit'
 
-if $stdout.tty? || ENV.has_key?('AUTOTEST')
+if $stdout.tty?
   require 'redgreen'
 end
 

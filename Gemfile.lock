@@ -12,10 +12,6 @@ dependencies:
     group: 
     - :development
     version: ">= 0"
-  autotest: 
-    group: 
-    - :development
-    version: ">= 0"
   redgreen: 
     group: 
     - :development
@@ -27,8 +23,6 @@ dependencies:
 specs: 
 - rake: 
     version: 0.8.7
-- autotest: 
-    version: 4.2.9
 - builder: 
     version: 2.1.2
 - configuration: 
@@ -53,7 +47,7 @@ specs:
     version: 0.6.2
 - shoulda: 
     version: 2.10.3
-hash: 4d4aa8edd0e024007e47bd9bb762911dc69a4016
+hash: 6dc4b144bce73c6a9658973592d3deb5a99418c2
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
