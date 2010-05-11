@@ -1,3 +1,4 @@
+.bundle
+.rvmrc
 *.gem
 rdoc
-tmp

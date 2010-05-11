@@ -1,6 +1,6 @@
-require 'captain/version'
-
 module Captain
+  VERSION = '0.2.0'
+
   autoload :Application,   'captain/application'
   autoload :Configuration, 'captain/configuration'
   autoload :Image,         'captain/image'

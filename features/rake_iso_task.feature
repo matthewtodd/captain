@@ -3,6 +3,7 @@ Feature: Rake ISO Task
   As a perennial yak-shaver
   I want to assemble my own installer CD
 
+  @wip
   Scenario: Running from rake
     Given the following Gemfile:
       """

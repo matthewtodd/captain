@@ -35,7 +35,7 @@ class ShellHelper
 
   def run(*args)
     chdir do
-      system(*args)
+      system(*args) || raise('Command failed!')
     end
   end
 end

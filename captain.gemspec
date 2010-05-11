@@ -1,28 +1,40 @@
-# -*- encoding: utf-8 -*-
+require 'bundler'
+$:.unshift File.expand_path('../lib', __FILE__)
+require 'captain'
 
-Gem::Specification.new do |s|
-  s.name = %q{captain}
-  s.version = "0.2.0"
+# Feel free to change whatever you like! This file is yours now.
+Gem::Specification.new do |spec|
+  spec.name    = 'captain'
+  spec.version = Captain::VERSION
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Matthew Todd"]
-  s.date = %q{2010-02-24}
-  s.email = %q{matthew.todd@gmail.com}
-  s.extra_rdoc_files = ["README.rdoc"]
-  s.files = ["Rakefile", "lib/captain", "lib/captain/application.rb", "lib/captain/configuration.rb", "lib/captain/image.rb", "lib/captain/package.rb", "lib/captain/package_list.rb", "lib/captain/rake", "lib/captain/rake/iso_task.rb", "lib/captain/rake/vmware_task.rb", "lib/captain/rake.rb", "lib/captain/release.rb", "lib/captain/remote.rb", "lib/captain/resource.rb", "lib/captain/resources", "lib/captain/resources/disk_base_components.erb", "lib/captain/resources/disk_base_installable.erb", "lib/captain/resources/disk_cd_type.erb", "lib/captain/resources/disk_info.erb", "lib/captain/resources/disk_udeb_include.erb", "lib/captain/resources/isolinux.bin", "lib/captain/resources/isolinux.cfg", "lib/captain/resources/preseed.seed.erb", "lib/captain/resources/release.erb", "lib/captain/resources/release_component.erb", "lib/captain/version.rb", "lib/captain/vm", "lib/captain/vm/vmware.rb", "lib/captain/vm.rb", "lib/captain.rb", "README.rdoc", "examples/chef_client.rake", "captain.gemspec", "test/configuration_test.rb", "test/rake", "test/rake/iso_task_test.rb", "test/rake/vmware_task_test.rb", "test/test_helper.rb", "features/rake_iso_task.feature", "features/rake_vmware_task.feature", "features/steps", "features/steps/captain_steps.rb", "features/support", "features/support/bundler.rb", "features/support/env.rb", "features/support/shell.rb", "features/support/vmware.rb"]
-  s.rdoc_options = ["--main", "README.rdoc", "--title", "captain-0.2.0", "--inline-source"]
-  s.require_paths = ["lib"]
-  s.requirements = ["mkisofs"]
-  s.rubygems_version = %q{1.3.6}
-  s.summary = %q{Builds an Ubuntu installation CD just as you like it.}
+  spec.summary = 'Builds an Ubuntu installation CD just as you like it.'
+  spec.description = <<-END.gsub(/^ */, '')
+    #{spec.summary}
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
+    Pulls in just the packages you request, allows bundling of arbitrary files,
+    and provides hooks into common preseeding options.
+  END
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-    else
-    end
-  else
-  end
+  spec.author = 'Matthew Todd'
+  spec.email  = 'matthew.todd@gmail.com'
+  spec.homepage = 'http://github.com/matthewtodd/captain'
+
+  spec.requirements = ['mkisofs']
+  spec.add_bundler_dependencies
+
+  # The kooky &File.method(:basename) trick keeps us from accidentally
+  # shadowing a variable named "file" in the context that evaluates this
+  # gemspec. I actually ran into this problem with Bundler!
+  spec.files            = Dir['**/*.rdoc', 'bin/*', 'data/**/*', 'ext/**/*.{rb,c}', 'lib/**/*.rb', 'man/**/*', 'test/**/*.rb']
+  spec.executables      = Dir['bin/*'].map &File.method(:basename)
+  spec.extensions       = Dir['ext/**/extconf.rb']
+  spec.extra_rdoc_files = Dir['**/*.rdoc', 'ext/**/*.c']
+  spec.test_files       = Dir['test/**/*_test.rb']
+
+  spec.rdoc_options = %W(
+    --main README.rdoc
+    --title #{spec.full_name}
+    --inline-source
+    --webcvs http://github.com/matthewtodd/captain/blob/v#{spec.version}/
+  )
 end

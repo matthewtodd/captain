@@ -1,9 +1,11 @@
 source :rubygems
 
-gem 'captain', :path => File.expand_path('..', __FILE__)
+gem 'rake'
 
-gem 'autotest'
-gem 'cucumber'
-gem 'redgreen'
-gem 'shoe'
-gem 'shoulda'
+group :development do
+  gem 'autotest'
+  gem 'cucumber'
+  gem 'redgreen'
+  gem 'shoe'
+  gem 'shoulda'
+end

@@ -3,6 +3,7 @@ Feature: Rake VMware Task
   As a perennial yak-shaver
   I want some help booting it up in VMware
 
+  @wip
   Scenario: Running from rake
     Given the following Gemfile:
       """

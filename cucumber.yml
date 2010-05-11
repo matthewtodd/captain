@@ -1,0 +1,2 @@
+default: features --format progress --tags ~@wip
+wip: features --format pretty --tags @wip --wip

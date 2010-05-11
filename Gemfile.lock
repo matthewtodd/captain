@@ -1,0 +1,59 @@
+--- 
+dependencies: 
+  shoe: 
+    group: 
+    - :development
+    version: ">= 0"
+  rake: 
+    group: 
+    - :default
+    version: ">= 0"
+  shoulda: 
+    group: 
+    - :development
+    version: ">= 0"
+  autotest: 
+    group: 
+    - :development
+    version: ">= 0"
+  redgreen: 
+    group: 
+    - :development
+    version: ">= 0"
+  cucumber: 
+    group: 
+    - :development
+    version: ">= 0"
+specs: 
+- rake: 
+    version: 0.8.7
+- autotest: 
+    version: 4.2.9
+- builder: 
+    version: 2.1.2
+- configuration: 
+    version: 1.1.0
+- diff-lcs: 
+    version: 1.1.2
+- trollop: 
+    version: 1.16.2
+- gherkin: 
+    version: 1.0.26
+- json_pure: 
+    version: 1.4.3
+- term-ansicolor: 
+    version: 1.0.5
+- cucumber: 
+    version: 0.7.2
+- launchy: 
+    version: 0.3.5
+- redgreen: 
+    version: 1.2.2
+- shoe: 
+    version: 0.6.2
+- shoulda: 
+    version: 2.10.3
+hash: 4d4aa8edd0e024007e47bd9bb762911dc69a4016
+sources: 
+- Rubygems: 
+    uri: http://gemcutter.org
