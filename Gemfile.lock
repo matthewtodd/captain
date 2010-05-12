@@ -8,10 +8,6 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
-  shoulda: 
-    group: 
-    - :development
-    version: ">= 0"
   redgreen: 
     group: 
     - :development
@@ -45,9 +41,7 @@ specs:
     version: 1.2.2
 - shoe: 
     version: 0.6.2
-- shoulda: 
-    version: 2.10.3
-hash: 6dc4b144bce73c6a9658973592d3deb5a99418c2
+hash: 4befec8ae587b65e9bdaf11776b4d9853589da00
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org

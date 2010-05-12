@@ -2,15 +2,15 @@ require 'test/test_helper'
 require 'rake'
 
 class VMwareTest < Test::Unit::TestCase
+  extend DeclarativeTests
+
   attr_reader :rake
+  attr_reader :subject
 
   def setup
     @rake = Rake.application = Rake::Application.new.extend(RakeAssertions)
     @rake.test = self
-  end
-
-  subject do
-    Captain::Rake::VMware
+    @subject = Captain::Rake::VMware
   end
 
   should 'define a file task' do

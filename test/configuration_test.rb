@@ -1,8 +1,12 @@
 require 'test/test_helper'
 
 class ConfigurationTest < Test::Unit::TestCase
-  subject do
-    Captain::Configuration.new
+  extend DeclarativeTests
+
+  attr_reader :subject
+
+  def setup
+    @subject = Captain::Configuration.new
   end
 
   should 'have default architecture' do

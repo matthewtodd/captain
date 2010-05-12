@@ -1,9 +1,14 @@
 require 'captain'
 require 'test/unit'
-require 'shoulda/test_unit'
 
 if $stdout.tty?
   require 'redgreen'
+end
+
+module DeclarativeTests
+  def should(name, &block)
+    define_method("test should #{name}", &block)
+  end
 end
 
 module RakeAssertions

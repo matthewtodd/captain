@@ -2,16 +2,15 @@ require 'test/test_helper'
 require 'rake'
 
 class ISOTest < Test::Unit::TestCase
+  extend DeclarativeTests
+
   attr_reader :rake
+  attr_reader :subject
 
   def setup
     @rake = Rake.application = Rake::Application.new.extend(RakeAssertions)
     @rake.test = self
-  end
-
-
-  subject do
-    Captain::Rake::ISO
+    @subject = Captain::Rake::ISO
   end
 
   should 'define a file task' do
