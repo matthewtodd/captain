@@ -77,7 +77,7 @@ See {hcts/bootstrap}[http://github.com/hcts/bootstrap] for an example project.
 == Preseeding
 
 See
-{preseed.seed.erb}[http://github.com/matthewtodd/captain/blob/master/lib/captain/resources/preseed.seed.erb].
+{preseed.seed.erb}[http://github.com/matthewtodd/captain/blob/master/data/captain/preseed.seed.erb].
 There may be a couple of controversial decisions in there that could use some
 configuring: there's just one monolithic disk partition, and no http mirrors
 included in <tt>/etc/apt/sources.list</tt>.
