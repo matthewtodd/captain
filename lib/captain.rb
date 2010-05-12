@@ -1,7 +1,7 @@
 require 'pathname'
 
 module Captain
-  VERSION = '0.2.0'
+  VERSION = '0.3.0'
 
   autoload :Application,   'captain/application'
   autoload :Configuration, 'captain/configuration'
