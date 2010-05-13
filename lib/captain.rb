@@ -1,4 +1,6 @@
 require 'pathname'
+require 'rbconfig'
+require 'rbconfig/datadir'
 
 module Captain
   VERSION = '0.3.0'
