@@ -1,4 +1,3 @@
-require 'bundler'
 $:.unshift File.expand_path('../lib', __FILE__)
 require 'captain'
 
@@ -20,7 +19,10 @@ Gem::Specification.new do |spec|
   spec.homepage = 'http://github.com/matthewtodd/captain'
 
   spec.requirements = ['mkisofs']
-  spec.add_bundler_dependencies
+  spec.add_runtime_dependency 'rake'
+  spec.add_development_dependency 'cucumber'
+  spec.add_development_dependency 'redgreen'
+  spec.add_development_dependency 'shoe'
 
   # The kooky &File.method(:basename) trick keeps us from accidentally
   # shadowing a variable named "file" in the context that evaluates this

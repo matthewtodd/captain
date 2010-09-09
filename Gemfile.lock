@@ -1,47 +1,41 @@
---- 
-dependencies: 
-  shoe: 
-    group: 
-    - :development
-    version: ">= 0"
-  rake: 
-    group: 
-    - :default
-    version: ">= 0"
-  redgreen: 
-    group: 
-    - :development
-    version: ">= 0"
-  cucumber: 
-    group: 
-    - :development
-    version: ">= 0"
-specs: 
-- rake: 
-    version: 0.8.7
-- builder: 
-    version: 2.1.2
-- configuration: 
-    version: 1.1.0
-- diff-lcs: 
-    version: 1.1.2
-- trollop: 
-    version: 1.16.2
-- gherkin: 
-    version: 1.0.26
-- json_pure: 
-    version: 1.4.3
-- term-ansicolor: 
-    version: 1.0.5
-- cucumber: 
-    version: 0.7.2
-- launchy: 
-    version: 0.3.5
-- redgreen: 
-    version: 1.2.2
-- shoe: 
-    version: 0.6.2
-hash: 4befec8ae587b65e9bdaf11776b4d9853589da00
-sources: 
-- Rubygems: 
-    uri: http://gemcutter.org
+PATH
+  remote: .
+  specs:
+    captain (0.3.0)
+      rake
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    builder (2.1.2)
+    configuration (1.1.0)
+    cucumber (0.7.2)
+      builder (>= 2.1.2)
+      diff-lcs (>= 1.1.2)
+      gherkin (>= 1.0.24)
+      json_pure (>= 1.2.4)
+      term-ansicolor (>= 1.0.4)
+    diff-lcs (1.1.2)
+    gherkin (1.0.26)
+      trollop (>= 1.15)
+    json_pure (1.4.3)
+    launchy (0.3.5)
+      configuration (>= 0.0.5)
+      rake (>= 0.8.1)
+    rake (0.8.7)
+    redgreen (1.2.2)
+    shoe (0.6.2)
+      launchy
+      rake
+    term-ansicolor (1.0.5)
+    trollop (1.16.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  captain!
+  cucumber
+  rake
+  redgreen
+  shoe
