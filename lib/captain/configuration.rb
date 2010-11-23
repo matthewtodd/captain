@@ -4,7 +4,9 @@ module Captain
   class Configuration
     def initialize
       self.architecture          = 'i386'
-      self.bundle_directory      = 'bundle'
+      self.captain_directory     = 'captain'
+      self.bundle_directory      = File.join(captain_directory, 'bundle')
+      self.custom_preseed_file   = File.join(captain_directory, 'preseed.custom.erb')
       self.include_packages      = ['linux-server', 'language-support-en', 'grub']
       self.install_packages      = []
       self.label                 = 'Ubuntu'
@@ -18,7 +20,9 @@ module Captain
     end
 
     attr_accessor :architecture
+    attr_accessor :captain_directory
     attr_accessor :bundle_directory
+    attr_accessor :custom_preseed_file
     attr_accessor :install_packages
     attr_accessor :label
     attr_accessor :output_directory

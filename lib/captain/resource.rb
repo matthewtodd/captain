@@ -15,7 +15,11 @@ module Captain
     end
 
     def contents
-      Captain.datadir.join(@name).read
+      if @name.include?(File::SEPARATOR)
+        File.read(@name)
+      else
+        Captain.datadir.join(@name).read
+      end
     end
 
     def copy_to(*paths)

@@ -23,6 +23,10 @@ module Captain
       FileUtils.cp_r(bundle_directory, working_directory) if File.directory?(bundle_directory)
     end
 
+    def preseed_template_path
+      File.exists?(custom_preseed_file) ? custom_preseed_file : 'preseed.seed.erb'
+    end
+
     def create_packages
       PackageList.new(repositories, architecture, tasks, include_packages.concat(install_packages)).copy_to(working_directory, self)
     end
@@ -33,7 +37,7 @@ module Captain
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'vmlinuz'  ).copy_to(working_directory, 'install', 'vmlinuz')
       Remote.installer_file(mirror, codename, architecture, 'cdrom', 'initrd.gz').copy_to(working_directory, 'install', 'initrd.gz')
 
-      Resource.template('preseed.seed.erb',          binding).copy_to(working_directory, 'install', 'preseed.seed')
+      Resource.template(preseed_template_path,       binding).copy_to(working_directory, 'install', 'preseed.seed')
       Resource.template('disk_base_components.erb',  binding).copy_to(working_directory, '.disk', 'base_components')
       Resource.template('disk_base_installable.erb', binding).copy_to(working_directory, '.disk', 'base_installable')
       Resource.template('disk_cd_type.erb',          binding).copy_to(working_directory, '.disk', 'cd_type')
