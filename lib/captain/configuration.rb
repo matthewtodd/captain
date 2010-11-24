@@ -17,6 +17,7 @@ module Captain
       self.tag                   = 'captain'
       self.version               = '9.04'
       self.working_directory     = temporary_directory
+      self.auto_install          = false
     end
 
     attr_accessor :architecture
@@ -31,6 +32,7 @@ module Captain
     attr_accessor :tag
     attr_accessor :version
     attr_accessor :working_directory
+    attr_accessor :auto_install
 
     def include_packages
       @include_packages.dup

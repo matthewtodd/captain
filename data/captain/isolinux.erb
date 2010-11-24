@@ -1,6 +1,14 @@
-# Automatically boot the default label after 10 (= 100 10ths of a) second
-timeout 100
-default normal
+<% 
+   if auto_install
+     timeout = 0
+     default = "install"
+   else
+     timeout = 100
+     default = "normal"
+   end
+ %>
+timeout <%= timeout %>
+default <%= default %>
 say Type install at the boot: prompt to boot the installer.
 
 label normal
