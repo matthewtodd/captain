@@ -46,7 +46,7 @@ module Captain
     # the CD.
     def create_boot_loader
       Resource.file('isolinux.bin').copy_to(working_directory, 'isolinux', 'isolinux.bin')
-      Resource.template('isolinux.erb').copy_to(working_directory, 'isolinux', 'isolinux.cfg')
+      Resource.template('isolinux.erb', binding).copy_to(working_directory, 'isolinux', 'isolinux.cfg')
     end
 
     def create_ubuntu_symlink
