@@ -18,6 +18,7 @@ module Captain
       def define
         file virtual_machine.path => virtual_machine.prerequisites do
           virtual_machine.create
+          virtual_machine.install
         end
 
         desc description
