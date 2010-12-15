@@ -6,11 +6,16 @@ module Captain
     class VirtualBox
       attr_accessor :name
       attr_accessor :operating_system
-      attr_accessor :iso_image
+      attr_accessor :config
+      attr_accessor :vm
 
       def initialize(name='vm', operating_system='ubuntu')
         @name             = name
         @operating_system = operating_system
+      end
+
+      def iso_image
+        config.iso_image_path
       end
 
       def prerequisites
@@ -21,12 +26,21 @@ module Captain
         Pathname.new(File.expand_path("~/Library/VirtualBox/Machines/#{name}/#{name}.xml"))
       end
 
-      def create
-        `VBoxManage createvm --name #{name} --ostype Ubuntu_64 --register`
-        vm = ::VirtualBox::VM.find(name)
+      def os_type_id
+        operating_system.capitalize << "_64" if config.architecture == "amd64"
+      end
 
-        vm.memory_size = 256
+      def vm
+        @vm ||= ::VirtualBox::VM.find(name)
+      end
+
+      def create
+        `VBoxManage createvm --name #{name} --register`
+        vm.os_type_id = os_type_id
+
+        vm.memory_size = 512
         vm.network_adapters[0].enabled = true
+        vm.network_adapters[0].attachment_type = :nat
         vm.boot_order = [:dvd, :hard_disk, :null, :null]
         vm.bios.acpi_enabled = true
         vm.save
@@ -36,21 +50,6 @@ module Captain
         `VBoxManage storagectl #{name} --name 'IDE Controller' --add ide`
         `VBoxManage storageattach #{name} --storagectl 'SATA Controller' --port 0 --device 0 --type hdd --medium #{hard_disk_path}`
         `VBoxManage storageattach #{name} --storagectl 'IDE Controller' --port 0 --device 0 --type dvddrive --medium #{iso_image_path}`
-        `VBoxManage storageattach #{name} --storagectl 'IDE Controller' --port 0 --device 1 --type dvddrive --medium #{vboxguestadditions_iso_path}`
-        
-        vm.start("gui")
-
-        puts "Waiting for installation to finish and box to shutdown"
-        until vm.powered_off?
-          sleep 15
-          print "."
-        end
-
-        vm.medium_attachments.reject{|ma| ma.type == :hard_disk }.each {|ma| ma.detach }
-        vm.save
-
-        vm.export(ovf_path)
-        vm.destroy(:destroy_medium => :delete)
       end
 
       private
