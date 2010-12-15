@@ -17,7 +17,7 @@ module Captain
         '-full-iso9660-filenames',
         '-joliet',
         '-no-emul-boot',
-        '-output', path,
+        '-output', path.to_s,
         '-rational-rock',
         '-volid', name,
         @base_directory) || raise('Error creating iso image.')
