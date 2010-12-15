@@ -17,7 +17,7 @@ module Captain
       self.tag                   = 'captain'
       self.version               = '9.04'
       self.working_directory     = temporary_directory
-      self.auto_install          = false
+      self.auto_install          = true
     end
 
     attr_accessor :architecture
