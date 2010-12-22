@@ -20,7 +20,7 @@ module Captain
 
     # This is a convenient way to put arbitrary content on the disk.
     def create_bundle_directory
-      FileUtils.cp_r(bundle_directory, working_directory) if File.directory?(bundle_directory)
+      FileUtils.cp_r(bundle_directory, working_directory, :preserve => true) if File.directory?(bundle_directory)
     end
 
     def create_packages
