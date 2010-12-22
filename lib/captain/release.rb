@@ -91,7 +91,11 @@ module Captain
         end
 
         def size
-          @contents.bytesize
+          if @contents.respond_to? :bytesize
+            @contents.bytesize
+          else
+            @contents.length
+          end
         end
       end
     end
