@@ -91,7 +91,7 @@ module Captain
         end
 
         def size
-          @contents.bytes.to_a.size
+          @contents.bytesize
         end
       end
     end
