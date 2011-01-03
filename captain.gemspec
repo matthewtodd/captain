@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.requirements = ['mkisofs']
   spec.add_runtime_dependency 'rake'
+  spec.add_runtime_dependency 'virtualbox'
   spec.add_development_dependency 'cucumber'
   spec.add_development_dependency 'redgreen'
   spec.add_development_dependency 'shoe'
