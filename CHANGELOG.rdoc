@@ -1,0 +1,3 @@
+= Edge
+
+* Preserve file mode and permissions when copying from the bundle directory. (Michael Hale)
