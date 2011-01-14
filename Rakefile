@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
-require 'shoe'
+Bundler::GemHelper.install_tasks
 
+require 'shoe'
 Shoe.install_tasks
