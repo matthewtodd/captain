@@ -3,12 +3,10 @@
 Captain provides Ruby-based understading of APT repositories, so that you can
 do interesting things with them, even from non-Linux platforms.
 
-For example, captain includes a rake task to build an Ubuntu installation CD
-just as you like it.
-
-Captain gathers packages from any number of repositories, preseeds almost all
-of the installer questions, and runs on any platform with <tt>mkisofs</tt>
-(including OSX).
+For example, captain includes a Rake task to build an Ubuntu installation CD
+just as you like it. This Rake task gathers packages from any number of
+repositories, preseeds almost all of the installer questions, and runs on any
+platform with <tt>mkisofs</tt> (including OSX).
 
 == Behold
 
