@@ -22,7 +22,6 @@ GEM
       trollop (>= 1.15)
     json_pure (1.4.3)
     rake (0.8.7)
-    redgreen (1.2.2)
     shoe (0.7.1)
       rake (~> 0.8.7)
     term-ansicolor (1.0.5)
@@ -37,6 +36,5 @@ DEPENDENCIES
   captain!
   cucumber
   rake
-  redgreen
   shoe
   virtualbox

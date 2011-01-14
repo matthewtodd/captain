@@ -1,10 +1,6 @@
 require 'captain'
 require 'test/unit'
 
-if $stdout.tty?
-  require 'redgreen'
-end
-
 module DeclarativeTests
   def should(name, &block)
     define_method("test should #{name}", &block)

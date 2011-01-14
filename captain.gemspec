@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rake'
   spec.add_runtime_dependency 'virtualbox'
   spec.add_development_dependency 'cucumber'
-  spec.add_development_dependency 'redgreen'
   spec.add_development_dependency 'shoe'
 
   # The kooky &File.method(:basename) trick keeps us from accidentally
