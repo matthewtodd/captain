@@ -6,12 +6,13 @@ Gem::Specification.new do |spec|
   spec.name    = 'captain'
   spec.version = Captain::VERSION
 
-  spec.summary = 'Builds an Ubuntu installation CD just as you like it.'
+  spec.summary = 'A Ruby-based understaing of APT repositories.'
   spec.description = <<-END.gsub(/^ */, '')
     #{spec.summary}
 
-    Pulls in just the packages you request, allows bundling of arbitrary files,
-    and provides hooks into common preseeding options.
+    Provides a rake task to build a custom installation disk that pulls in just
+    the packages you request, allows bundling of arbitrary files, and provides
+    hooks into common preseeding options.
   END
 
   spec.author = 'Matthew Todd'

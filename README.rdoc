@@ -1,11 +1,14 @@
 = Captain
 
-Captain provides a rake task to build an Ubuntu installation CD just as you
-like it.
+Captain provides Ruby-based understading of APT repositories, so that you can
+do interesting things with them, even from non-Linux platforms.
 
-It gathers packages from any number of repositories, preseeds almost all of the
-installer questions, and runs on any platform with <tt>mkisofs</tt> (including
-OSX).
+For example, captain includes a rake task to build an Ubuntu installation CD
+just as you like it.
+
+Captain gathers packages from any number of repositories, preseeds almost all
+of the installer questions, and runs on any platform with <tt>mkisofs</tt>
+(including OSX).
 
 == Behold
 
