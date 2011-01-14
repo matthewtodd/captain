@@ -2,6 +2,7 @@
 
 * Preserve file mode and permissions when copying from the bundle directory. (Michael Hale)
 * Add an auto_install option (default: true) to make the installer the default boot target. (Michael Hale)
+* Ruby 1.9 compatibility. (Michael Hale)
 
 = 0.3.0 (2010 May 12)
 
