@@ -1,6 +1,9 @@
 require 'pathname'
-require 'rbconfig'
-require 'rbconfig/datadir'
+
+# TODO Rubygems 1.5.0 deprecated RbConfig.datadir. For now, I'm going to
+# introduce this spurious dependency on Rubygems, so that Gem.datadir will be
+# available, but I'd love to find a better solution.
+require 'rubygems'
 
 module Captain
   VERSION = '0.3.0'
@@ -17,13 +20,6 @@ module Captain
   autoload :VM,            'captain/vm'
 
   def self.datadir
-    @@datadir ||= begin
-      datadir = RbConfig.datadir('captain')
-      if !File.exist?(datadir)
-        warn "WARN: #{datadir} does not exist.\n  Trying again with relative data directory..."
-        datadir = File.expand_path('../../data/captain', __FILE__)
-      end
-      Pathname.new(datadir)
-    end
+    Pathname.new Gem.datadir('captain')
   end
 end
