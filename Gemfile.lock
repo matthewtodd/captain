@@ -22,11 +22,11 @@ GEM
       trollop (>= 1.15)
     json_pure (1.4.3)
     rake (0.8.7)
-    shoe (0.7.1)
+    shoe (0.8.0)
       rake (~> 0.8.7)
     term-ansicolor (1.0.5)
     trollop (1.16.2)
-    virtualbox (0.8.0)
+    virtualbox (0.8.3)
       ffi (~> 0.6.3)
 
 PLATFORMS
@@ -35,6 +35,4 @@ PLATFORMS
 DEPENDENCIES
   captain!
   cucumber
-  rake
   shoe
-  virtualbox

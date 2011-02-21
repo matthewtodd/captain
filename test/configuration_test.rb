@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class ConfigurationTest < Test::Unit::TestCase
   extend DeclarativeTests

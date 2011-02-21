@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 require 'rake'
 
 class VMwareTest < Test::Unit::TestCase

@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 require 'rake'
 
 class ISOTest < Test::Unit::TestCase
