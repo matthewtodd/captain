@@ -1,3 +1,4 @@
+require 'captain/version'
 require 'pathname'
 
 # TODO Rubygems 1.5.0 deprecated RbConfig.datadir. For now, I'm going to
@@ -6,8 +7,6 @@ require 'pathname'
 require 'rubygems'
 
 module Captain
-  VERSION = '0.3.0'
-
   autoload :Application,   'captain/application'
   autoload :Configuration, 'captain/configuration'
   autoload :Image,         'captain/image'

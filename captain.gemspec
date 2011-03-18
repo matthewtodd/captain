@@ -1,5 +1,5 @@
 $:.unshift File.expand_path('../lib', __FILE__)
-require 'captain'
+require 'captain/version'
 
 # Feel free to change whatever you like! This file is yours now.
 Gem::Specification.new do |spec|
