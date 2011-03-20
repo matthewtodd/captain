@@ -3,11 +3,13 @@ require 'rake'
 
 class ISOTest < Test::Unit::TestCase
   extend DeclarativeTests
+  include IsolatedWorkingDirectory
 
   attr_reader :rake
   attr_reader :subject
 
   def setup
+    super
     @rake = Rake.application = Rake::Application.new.extend(RakeAssertions)
     @rake.test = self
     @subject = Captain::Rake::ISO
@@ -22,12 +24,14 @@ class ISOTest < Test::Unit::TestCase
   end
 
   it 'has the file task depend on the files that will be bundled on the disk' do
-    task = subject.new do |config|
-      config.bundle_directory = 'lib'
-    end
+    FileUtils.mkpath('config/captain/bundle')
+    FileUtils.touch('config/captain/bundle/foo')
+    FileUtils.touch('config/captain/bundle/bar')
+
+    task = subject.new
 
     rake.should_have_task(task.config.iso_image_path).
-             depending_on(rake.rakefile, *Dir.glob('lib/**/*'))
+             depending_on(rake.rakefile, *Dir.glob('config/captain/bundle/**/*'))
   end
 
   it 'defines a captain task that depends on the file' do
