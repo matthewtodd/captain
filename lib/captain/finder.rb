@@ -4,18 +4,14 @@ module Captain
       @paths = paths
     end
 
-    def contents(name)
-      if path = find(name)
-        File.read(path)
-      else
-        raise Errno::ENOENT.new(name)
-      end
+    def path(name)
+      paths(name).find(not_found(name)) { |path| File.exist?(path) }
     end
 
     private
 
-    def find(name)
-      paths(name).find { |path| File.file?(path) }
+    def not_found(name)
+      lambda { raise(Errno::ENOENT.new(name)) }
     end
 
     def paths(name)

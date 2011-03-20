@@ -23,19 +23,17 @@ class FinderTest < Test::Unit::TestCase
 
   should 'raise when path does not exist' do
     assert_raise Errno::ENOENT do
-      subject.contents('DOES NOT EXIST')
+      subject.path('DOES NOT EXIST')
     end
   end
 
-  should 'read contents of a file in the lookup path' do
-    File.open('a/path', 'w') { |stream| stream.write('CONTENTS') }
-    assert_equal 'CONTENTS', subject.contents('path')
+  should 'find files in the lookup path' do
+    FileUtils.touch %w( a/path )
+    assert_equal 'a/path', subject.path('path')
   end
 
   should 'prefer files earlier in the lookup path' do
-    File.open('a/path', 'w') { |stream| stream.write('CONTENTS OF A') }
-    File.open('b/path', 'w') { |stream| stream.write('CONTENTS OF B') }
-
-    assert_equal 'CONTENTS OF B', subject.contents('path')
+    FileUtils.touch %w( a/path b/path )
+    assert_equal 'b/path', subject.path('path')
   end
 end
