@@ -13,10 +13,6 @@ class ConfigurationTest < Test::Unit::TestCase
     assert_equal 'i386', subject.architecture
   end
 
-  it 'has a default bundle_directory' do
-    assert_equal 'bundle', subject.bundle_directory
-  end
-
   it 'has a default directory' do
     assert_equal 'config/captain', subject.directory
   end
@@ -66,11 +62,6 @@ class ConfigurationTest < Test::Unit::TestCase
   it 'accepts a new architecture' do
     subject.architecture = 'amd64'
     assert_equal 'amd64', subject.architecture
-  end
-
-  it 'accepts a new bundle_directory' do
-    subject.bundle_directory = 'vendor'
-    assert_equal 'vendor', subject.bundle_directory
   end
 
   it 'accepts a new directory' do
@@ -163,6 +154,10 @@ class ConfigurationTest < Test::Unit::TestCase
   it 'accepts a new working directory' do
     subject.working_directory = 'path/to/working'
     assert_equal 'path/to/working', subject.working_directory
+  end
+
+  it 'generates a bundle directory' do
+    assert_equal 'config/captain/bundle', subject.bundle_directory
   end
 
   it 'generates template directory' do

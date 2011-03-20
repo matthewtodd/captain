@@ -5,7 +5,6 @@ module Captain
     def initialize
       self.architecture          = 'i386'
       self.auto_install          = true
-      self.bundle_directory      = 'bundle'
       self.directory             = 'config/captain'
       self.include_packages      = ['linux-server', 'language-support-en', 'grub']
       self.install_packages      = []
@@ -21,7 +20,6 @@ module Captain
 
     attr_accessor :architecture
     attr_accessor :auto_install
-    attr_accessor :bundle_directory
     attr_accessor :directory
     attr_accessor :install_packages
     attr_accessor :label
@@ -65,6 +63,10 @@ module Captain
 
       Pathname.new(output_directory).
               join(iso_image_basename).cleanpath.to_s
+    end
+
+    def bundle_directory
+      File.join(directory, 'bundle')
     end
 
     def template_directory
