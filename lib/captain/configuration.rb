@@ -4,6 +4,7 @@ module Captain
   class Configuration
     def initialize
       self.architecture          = 'i386'
+      self.auto_install          = true
       self.bundle_directory      = 'bundle'
       self.directory             = 'config/captain'
       self.include_packages      = ['linux-server', 'language-support-en', 'grub']
@@ -16,10 +17,10 @@ module Captain
       self.tag                   = 'captain'
       self.version               = '9.04'
       self.working_directory     = temporary_directory
-      self.auto_install          = true
     end
 
     attr_accessor :architecture
+    attr_accessor :auto_install
     attr_accessor :bundle_directory
     attr_accessor :directory
     attr_accessor :install_packages
@@ -30,7 +31,6 @@ module Captain
     attr_accessor :tag
     attr_accessor :version
     attr_accessor :working_directory
-    attr_accessor :auto_install
 
     def include_packages
       @include_packages.dup
