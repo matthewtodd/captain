@@ -18,15 +18,15 @@ class FinderTest < Test::Unit::TestCase
     FileUtils.touch('b/two')
   end
 
-  should 'find files in the lookup path' do
+  it 'finds files in the lookup path' do
     assert_equal 'b/two', subject.path('two')
   end
 
-  should 'prefer files earlier in the lookup path' do
+  it 'prefers files earlier in the lookup path' do
     assert_equal 'a/one', subject.path('one')
   end
 
-  should 'raise when path does not exist' do
+  it 'raises when path does not exist' do
     assert_raise Errno::ENOENT do
       subject.path('DOES NOT EXIST')
     end

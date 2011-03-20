@@ -13,7 +13,7 @@ class VMwareTest < Test::Unit::TestCase
     @subject = Captain::Rake::VMware
   end
 
-  should 'define a file task' do
+  it 'defines a file task' do
     subject.new
     rake.should_have_task('vm.vmwarevm').
                   of_type(Rake::FileTask).
@@ -21,7 +21,7 @@ class VMwareTest < Test::Unit::TestCase
 
   end
 
-  should 'depend on any given iso image' do
+  it 'depends on any given iso image' do
     task = subject.new do |task|
       task.iso_image = 'foo.iso'
     end
@@ -30,7 +30,7 @@ class VMwareTest < Test::Unit::TestCase
              depending_on('foo.iso')
   end
 
-  should 'define a task' do
+  it 'defines a task' do
     task = subject.new
 
     rake.should_have_task('vmware').

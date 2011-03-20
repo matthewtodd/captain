@@ -3,8 +3,8 @@ require 'tempfile'
 require 'test/unit'
 
 module DeclarativeTests
-  def should(name, &block)
-    define_method("test should #{name}", &block)
+  def it(name, &block)
+    define_method("test that it #{name}", &block)
   end
 end
 
