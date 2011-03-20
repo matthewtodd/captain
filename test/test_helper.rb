@@ -1,9 +1,25 @@
 require 'captain'
+require 'tempfile'
 require 'test/unit'
 
 module DeclarativeTests
   def should(name, &block)
     define_method("test should #{name}", &block)
+  end
+end
+
+module IsolatedWorkingDirectory
+  def setup
+    super
+    @original_directory = Dir.pwd
+    @working_directory  = Dir.mktmpdir
+    Dir.chdir(@working_directory)
+  end
+
+  def teardown
+    Dir.chdir(@original_directory)
+    FileUtils.remove_entry_secure(@working_directory)
+    super
   end
 end
 
