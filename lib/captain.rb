@@ -9,6 +9,7 @@ require 'rubygems'
 module Captain
   autoload :Application,   'captain/application'
   autoload :Configuration, 'captain/configuration'
+  autoload :Finder,        'captain/finder'
   autoload :Image,         'captain/image'
   autoload :Package,       'captain/package'
   autoload :PackageList,   'captain/package_list'
