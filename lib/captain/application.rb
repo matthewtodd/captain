@@ -8,7 +8,7 @@ module Captain
     end
 
     def run
-      Resource.finder = Finder.new(Captain.datadir)
+      Resource.finder = Finder.new(template_directory, Captain.datadir)
 
       create_bundle_directory
       create_packages
