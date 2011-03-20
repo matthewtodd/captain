@@ -17,6 +17,10 @@ class ConfigurationTest < Test::Unit::TestCase
     assert_equal 'bundle', subject.bundle_directory
   end
 
+  it 'has a default directory' do
+    assert_equal 'config/captain', subject.directory
+  end
+
   it 'has default include packages' do
     assert_equal ['linux-server', 'language-support-en', 'grub'],
                  subject.include_packages
@@ -67,6 +71,11 @@ class ConfigurationTest < Test::Unit::TestCase
   it 'accepts a new bundle_directory' do
     subject.bundle_directory = 'vendor'
     assert_equal 'vendor', subject.bundle_directory
+  end
+
+  it 'accepts a new directory' do
+    subject.directory = 'captain'
+    assert_equal 'captain', subject.directory
   end
 
   it 'accepts new include packages' do
@@ -154,6 +163,10 @@ class ConfigurationTest < Test::Unit::TestCase
   it 'accepts a new working directory' do
     subject.working_directory = 'path/to/working'
     assert_equal 'path/to/working', subject.working_directory
+  end
+
+  it 'generates template directory' do
+    assert_equal 'config/captain/templates', subject.template_directory
   end
 
   it 'generates installer repository mirror and codename' do
