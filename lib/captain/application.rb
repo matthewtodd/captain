@@ -8,6 +8,8 @@ module Captain
     end
 
     def run
+      Resource.finder = Finder.new(Captain.datadir)
+
       create_bundle_directory
       create_packages
       create_installer_and_its_supporting_files

@@ -2,12 +2,16 @@ require 'erb'
 
 module Captain
   class Resource
-    def self.file(name)
-      new(name)
-    end
+    class << self
+      attr_accessor :finder
 
-    def self.template(name, binding)
-      Template.new(name, binding)
+      def file(name)
+        new(name)
+      end
+
+      def template(name, binding)
+        Template.new(name, binding)
+      end
     end
 
     def initialize(name)
@@ -15,7 +19,7 @@ module Captain
     end
 
     def contents
-      Captain.datadir.join(@name).read
+      File.read(finder.path(@name))
     end
 
     def copy_to(*paths)
@@ -25,6 +29,10 @@ module Captain
     end
 
     private
+
+    def finder
+      self.class.finder
+    end
 
     class Template < Resource
       def initialize(name, binding)

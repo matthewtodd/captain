@@ -1,5 +1,4 @@
 require 'captain/version'
-require 'pathname'
 
 # TODO Rubygems 1.5.0 deprecated RbConfig.datadir. For now, I'm going to
 # introduce this spurious dependency on Rubygems, so that Gem.datadir will be
@@ -20,6 +19,6 @@ module Captain
   autoload :VM,            'captain/vm'
 
   def self.datadir
-    Pathname.new Gem.datadir('captain')
+    Gem.datadir('captain')
   end
 end
