@@ -183,12 +183,29 @@ module Captain
 
       private
 
-      # TODO report percent complete
-      # TODO report time spent
-      # TODO report time remaining
       def report
-        puts "#{OVERWRITE_PREVIOUS_LINE}  #{@current} of #{@total_size}"
+        puts "#{OVERWRITE_PREVIOUS_LINE}  [#{bar}] #{human_total_size}"
         $stdout.flush
+      end
+
+      def bar
+        width = 40
+        received  = @current * width / @total_size
+        remaining = width - received
+        '=' * received + ' ' * remaining
+      end
+
+      def human_total_size
+        case @total_size
+        when (0...1024)
+          "#{@total_size}B"
+        when (1024...1024**2)
+          "#{@total_size/1024}K"
+        when (1024**2...1024**3)
+          "#{@total_size/1024**2}M"
+        else
+          "#{@total_size/1024**3}G"
+        end
       end
     end
 

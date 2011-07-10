@@ -11,6 +11,7 @@
   subdirectory of the config directory. (Matthew Todd)
 * Generate a Lucid image by default, now that Jaunty is no longer supported.
   (Matthew Todd)
+* Show a nicer progress meter while downloading packages. (Matthew Todd)
 
 = 0.3.0 (2010 May 12)
 
