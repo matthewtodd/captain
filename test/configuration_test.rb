@@ -52,7 +52,7 @@ class ConfigurationTest < Test::Unit::TestCase
   end
 
   it 'has a default version' do
-    assert_equal '9.04', subject.version
+    assert_equal '10.04', subject.version
   end
 
   it 'has a default working directory' do

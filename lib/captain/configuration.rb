@@ -14,7 +14,7 @@ module Captain
       self.repositories          = ['http://us.archive.ubuntu.com/ubuntu lucid main restricted']
       self.tasks                 = ['minimal', 'standard']
       self.tag                   = 'captain'
-      self.version               = '9.04'
+      self.version               = '10.04'
       self.working_directory     = temporary_directory
     end
 
