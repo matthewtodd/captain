@@ -9,6 +9,8 @@
   (Michael Hale, Matthew Todd)
 * Remove bundle_directory setter from config, defaulting instead to a "bundle"
   subdirectory of the config directory. (Matthew Todd)
+* Generate a Lucid image by default, now that Jaunty is no longer supported.
+  (Matthew Todd)
 
 = 0.3.0 (2010 May 12)
 
