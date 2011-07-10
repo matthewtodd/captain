@@ -166,7 +166,10 @@ module Captain
       end
 
       def to_open_uri_hash
-        { :content_length_proc => method(:the_total_size_is), :progress_proc => method(:the_currently_downloaded_size_is) }
+        {
+          :content_length_proc => method(:the_total_size_is),
+          :progress_proc       => method(:the_currently_downloaded_size_is)
+        }
       end
 
       def the_total_size_is(size)
