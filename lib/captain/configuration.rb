@@ -6,7 +6,7 @@ module Captain
       self.architecture          = 'i386'
       self.auto_install          = true
       self.directory             = 'config/captain'
-      self.include_packages      = ['linux-server', 'language-support-en', 'grub']
+      self.include_packages      = ['linux-server', 'language-support-en', 'grub-pc']
       self.install_packages      = []
       self.label                 = 'Ubuntu'
       self.output_directory      = '.'

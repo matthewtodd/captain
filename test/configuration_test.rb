@@ -18,7 +18,7 @@ class ConfigurationTest < Test::Unit::TestCase
   end
 
   it 'has default include packages' do
-    assert_equal ['linux-server', 'language-support-en', 'grub'],
+    assert_equal ['linux-server', 'language-support-en', 'grub-pc'],
                  subject.include_packages
   end
 
@@ -86,7 +86,7 @@ class ConfigurationTest < Test::Unit::TestCase
 
   it 'ensures grub is in include packages' do
     subject.include_packages = ['some-package']
-    assert subject.include_packages.include?('grub')
+    assert subject.include_packages.include?('grub-pc')
   end
 
   it 'prohibits clearing include packages' do
