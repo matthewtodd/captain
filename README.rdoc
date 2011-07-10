@@ -87,6 +87,10 @@ Other than the disk partitioning, I suppose most of these things could be
 handled post-install, though I'm glad to accept patches / suggestions adding
 the configuration options you need.
 
+Alternatively, you may supply your own preseeding template. Just drop it in
+<tt>config/captain/templates/preseed.seed.erb</tt>. The template will be
+evaluated in the context of a Captain::Configuration.
+
 == Network Cache
 
 Captain caches everything it downloads from the network in
