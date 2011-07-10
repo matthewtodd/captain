@@ -39,7 +39,7 @@ class ConfigurationTest < Test::Unit::TestCase
   end
 
   it 'has default repositories' do
-    assert_equal ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted'],
+    assert_equal ['http://us.archive.ubuntu.com/ubuntu lucid main restricted'],
                  subject.repositories
   end
 

@@ -15,12 +15,12 @@ With the following +Rakefile+:
  require 'captain'
  Captain::Rake::ISO.new
 
-Captain builds an i386 Jaunty CD:
+Captain builds an i386 Lucid CD:
 
  $ rake captain
  ...
  $ ls
- ubuntu-9.04-captain-i386.iso
+ ubuntu-10.04-captain-i386.iso
  $
 
 == Install

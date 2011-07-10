@@ -10,12 +10,12 @@ Feature: Rake ISO Task
 
       Captain::Rake::ISO.new do |task|
         task.label        = 'Ubuntu'
-        task.version      = '9.04'
+        task.version      = '10.04'
         task.tag          = 'captain'
         task.architecture = 'i386'
 
         task.repositories = [
-          'http://us.archive.ubuntu.com/ubuntu jaunty main restricted'
+          'http://us.archive.ubuntu.com/ubuntu lucid main restricted'
         ]
 
         Captain::Rake::VMware.new do |vm|

@@ -11,7 +11,7 @@ module Captain
       self.label                 = 'Ubuntu'
       self.output_directory      = '.'
       self.post_install_commands = []
-      self.repositories          = ['http://us.archive.ubuntu.com/ubuntu jaunty main restricted']
+      self.repositories          = ['http://us.archive.ubuntu.com/ubuntu lucid main restricted']
       self.tasks                 = ['minimal', 'standard']
       self.tag                   = 'captain'
       self.version               = '9.04'
