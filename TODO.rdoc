@@ -1,0 +1,2 @@
+* Is it strictly necessary to include language-support-en?
+* Complain if a requested package isn't found.

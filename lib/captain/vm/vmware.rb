@@ -28,6 +28,7 @@ module Captain
           stream.write(config_contents)
         end
 
+        # TODO complain if vmware-vdiskmanager isn't found in the PATH.
         system "vmware-vdiskmanager -c -s 2GB -a lsilogic -t 0 #{path}/#{hard_disk_path}"
       end
 
