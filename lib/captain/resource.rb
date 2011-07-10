@@ -31,7 +31,7 @@ module Captain
     private
 
     def finder
-      self.class.finder
+      Resource.finder
     end
 
     class Template < Resource

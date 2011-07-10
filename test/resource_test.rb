@@ -17,4 +17,8 @@ class ResourceTest < Test::Unit::TestCase
   it 'reads it contents from the path given by its finder' do
     assert_equal 'CONTENTS', Resource.file('one').contents
   end
+
+  it 'also works for Templates' do
+    assert_equal 'CONTENTS', Resource.template('one', binding).contents
+  end
 end
